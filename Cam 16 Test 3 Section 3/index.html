@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Listening - Cam 16 Test 3 Part 3</title>
+    <style>
+        :root {
+            --primary: #004a99;
+            --secondary: #e67e22;
+            --locate-btn: #9b59b6;
+            --bg-gray: #f4f6f8;
+            --correct-bg: #d1e7dd;
+            --correct-border: #0f5132;
+            --wrong-bg: #f8d7da;
+            --wrong-border: #842029;
+            --highlight: #ffff00;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-gray); margin: 0; padding: 20px; display: flex; justify-content: center; }
+
+        .main-container { max-width: 900px; width: 100%; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        
+        /* Audio Player */
+        .audio-section { position: sticky; top: 0; background: white; padding: 20px 0; z-index: 100; border-bottom: 1px solid #ddd; text-align: center; margin-bottom: 30px; }
+        audio { width: 100%; max-width: 600px; }
+
+        /* Question Styling */
+        .section { margin-bottom: 40px; }
+        .section h3 { background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; }
+        .instruction { font-style: italic; color: #555; margin-bottom: 15px; }
+
+        .q-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; }
+        .q-text { font-weight: bold; margin-bottom: 10px; display: block; }
+        
+        .options-grid { display: grid; gap: 8px; }
+        
+        /* Option Styling */
+        .option-item { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; border-radius: 6px; border: 1px solid transparent; transition: 0.2s; background: #fff; }
+        .option-item:hover { background: #f0f0f0; border-color: #ccc; }
+        
+        /* Highlight States */
+        .opt-correct { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #0f5132; font-weight: bold; }
+        .opt-wrong { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #842029; text-decoration: line-through; opacity: 0.8; }
+
+        /* Locate Button */
+        .btn-locate { display: none; padding: 5px 12px; background: var(--locate-btn); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; float: right; }
+        
+        /* Transcript */
+        #transcript-container { display: none; margin-top: 40px; padding: 30px; background: #fffcf0; border: 2px dashed #e67e22; border-radius: 12px; line-height: 1.8; }
+        .loc-target { transition: 0.3s; border-radius: 3px; }
+        .highlight-active { background-color: var(--highlight); font-weight: bold; padding: 0 5px; box-shadow: 0 0 8px var(--highlight); border-bottom: 2px solid red; }
+
+        /* Footer & Table */
+        .footer { text-align: center; padding: 30px; margin-top: 20px;}
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+        
+        /* Result Table */
+        #result-area { display: none; margin-top: 30px; }
+        .score-box { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; text-align: center; }
+        
+        table.score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+        table.score-table th, table.score-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        table.score-table th { background-color: var(--primary); color: white; }
+        table.score-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .status-check { color: green; font-weight: bold; }
+        .status-cross { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <h1>IELTS Listening: Cam 16 Test 3 Part 3</h1>
+
+    <div class="audio-section">
+        <p><i>Listen to the conversation between two students, Adam and Rosie.</i></p>
+        <audio controls>
+            <source src="https://ise.edu.vn/wp-content/uploads/2023/06/Test-3-Part-3.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="section">
+        <h3>Questions 21 and 22</h3>
+        <p class="instruction">Choose TWO letters, A-E. Which TWO points does Adam make about his experiment on artificial sweeteners?</p>
+        <div class="q-block" id="block-21-22">
+            <div class="options-grid">
+                <label class="option-item"><input type="checkbox" name="q21" value="A"> A. The results were what he had predicted.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="B"> B. The experiment was simple to set up.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="C"> C. A large sample of people was tested.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="D" data-correct="true"> D. The subjects were unaware of what they were drinking.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="E" data-correct="true"> E. The test was repeated several times for each person.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('21_22')">📍 Locate</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Questions 23 and 24</h3>
+        <p class="instruction">Choose TWO letters, A-E. Which TWO problems did Rosie have when measuring the fat content of nuts?</p>
+        <div class="q-block" id="block-23-24">
+            <div class="options-grid">
+                <label class="option-item"><input type="checkbox" name="q23" value="A"> A. She used the wrong sort of nuts.</label>
+                <label class="option-item"><input type="checkbox" name="q23" value="B"> B. She used an unsuitable chemical.</label>
+                <label class="option-item"><input type="checkbox" name="q23" value="C" data-correct="true"> C. She did not grind the nuts finely enough.</label>
+                <label class="option-item"><input type="checkbox" name="q23" value="D"> D. The information on the nut package was incorrect.</label>
+                <label class="option-item"><input type="checkbox" name="q23" value="E" data-correct="true"> E. The weighing scales may have been unsuitable.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('23_24')">📍 Locate</button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Questions 25-30</h3>
+        <p class="instruction">Choose the correct letter, A, B or C.</p>
+        
+        <div class="q-block" id="block-25">
+            <span class="q-text">25. Adam suggests that restaurants could reduce obesity if their menus</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q25" value="A"> A. offered fewer options.</label>
+                <label class="option-item"><input type="radio" name="q25" value="B"> B. had more low-calorie foods.</label>
+                <label class="option-item"><input type="radio" name="q25" value="C" data-correct="true"> C. were organised in a particular way.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('25')">📍 Locate</button>
+        </div>
+
+        <div class="q-block" id="block-26">
+            <span class="q-text">26. The students agree that food manufacturers deliberately</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q26" value="A"> A. make calorie counts hard to understand.</label>
+                <label class="option-item"><input type="radio" name="q26" value="B" data-correct="true"> B. fail to provide accurate calorie counts.</label>
+                <label class="option-item"><input type="radio" name="q26" value="C"> C. use ineffective methods to reduce calories.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('26')">📍 Locate</button>
+        </div>
+
+        <div class="q-block" id="block-27">
+            <span class="q-text">27. What does Rosie say about levels of exercise in England?</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q27" value="A"> A. The amount recommended is much too low.</label>
+                <label class="option-item"><input type="radio" name="q27" value="B" data-correct="true"> B. Most people overestimate how much they do.</label>
+                <label class="option-item"><input type="radio" name="q27" value="C"> C. Women now exercise more than they used to.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('27')">📍 Locate</button>
+        </div>
+
+        <div class="q-block" id="block-28">
+            <span class="q-text">28. Adam refers to the location and width of stairs in a train station to illustrate</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q28" value="A" data-correct="true"> A. practical changes that can influence people’s behaviour.</label>
+                <label class="option-item"><input type="radio" name="q28" value="B"> B. methods of helping people who have mobility problems.</label>
+                <label class="option-item"><input type="radio" name="q28" value="C"> C. ways of preventing accidents by controlling crowd movement.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('28')">📍 Locate</button>
+        </div>
+
+        <div class="q-block" id="block-29">
+            <span class="q-text">29. What do the students agree about including reference to exercise in their presentation?</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q29" value="A"> A. They should probably leave it out.</label>
+                <label class="option-item"><input type="radio" name="q29" value="B"> B. They need to do more research on it.</label>
+                <label class="option-item"><input type="radio" name="q29" value="C" data-correct="true"> C. They should discuss this with their tutor.</label>
+            </div>
+            <button class="btn-locate" onclick="locate('29')">📍 Locate</button>
+        </div>
+
+        <div class="q-block" id="block-30">
+            <span class="q-text">30. What are the students going to do next for their presentation?</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q30" value="A"> A. prepare some slides for it</label>
+                <label class="option-item"><input type="radio" name="q30" value="B"> B. find out how long they have for it</label>
+                <label class="option-item"><input type="radio" name="q30" value="C" data-correct="true"> C. decide on its content and organisation</label>
+            </div>
+            <button class="btn-locate" onclick="locate('30')">📍 Locate</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="btn-submit" id="submit-btn" onclick="submitTest()">Submit to View Transcript</button>
+        
+        <div id="result-area">
+            <div class="score-box" id="final-score"></div>
+            <h3>Detailed Result Table</h3>
+            <table class="score-table">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="transcript-container">
+        <h2 style="color: var(--secondary);">Transcript</h2>
+        <p><b>ADAM:</b> Rosie, I’ve been thinking about our presentation on nutrition and obesity...</p>
+        <p><b>ROSIE:</b> Me too. What about your experiment on artificial sweeteners?</p>
+        <p><b>ADAM:</b> <span id="loc-21_22">It went well. I used a blind test - the subjects didn’t know which drink had the sweetener and which had sugar. And I made sure they each did the test three times to ensure the results were consistent.</span></p>
+        <p><b>ROSIE:</b> My nut experiment was harder. <span id="loc-23_24">I think the main problem was I didn't grind them into a fine enough powder, so the chemical didn't extract all the fat. And also, the scales I was using were only accurate to the nearest gram - I needed something much more precise.</span></p>
+        <p><b>ADAM:</b> Interesting. I read a study about restaurant menus. <span id="loc-25">It suggested that if you put the healthiest, low-calorie options at the very beginning of the menu, people are much more likely to choose them. It's all about how you organise the information.</span></p>
+        <p><b>ROSIE:</b> True. But food labels are a nightmare. <span id="loc-26">We agreed that manufacturers often make it nearly impossible to calculate the actual calorie count, like giving figures for 100g when the pack is 145g.</span></p>
+        <p><b>ROSIE:</b> And exercise! <span id="loc-27">Studies show that most people in England claim they are active, but they significantly overestimate the amount of exercise they actually do.</span></p>
+        <p><b>ADAM:</b> <span id="loc-28">It's like that train station design where they made the stairs wider and more central than the escalator. It naturally nudged people to take the stairs without even thinking about it. Simple physical changes like that can really change behaviour.</span></p>
+        <p><b>ROSIE:</b> Should we include that? <b>ADAM:</b> <span id="loc-29">I'm not sure. Let's ask our tutor Dr. Green what she thinks.</span></p>
+        <p><b>ROSIE:</b> Okay. What's next? <b>ADAM:</b> <span id="loc-30">Well, before we do anything else, we really need to sit down and map out exactly what's going in and the overall structure. We need a clear plan.</span></p>
+    </div>
+</div>
+
+<script>
+    function submitTest() {
+        let score = 0;
+        let tableHTML = "";
+        
+        // --- Helper Function to Process Questions ---
+        function processQuestion(qId, type, correctAnsDisplay) {
+            const inputs = document.getElementsByName(qId);
+            let userSelected = [];
+            let isCorrect = false;
+            let correctValues = [];
+
+            // 1. Identify User Selection & Correct Values
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                
+                // Collect Correct Values for internal logic
+                if (input.dataset.correct === "true") {
+                    correctValues.push(input.value);
+                    label.classList.add('opt-correct'); // Highlight GREEN always
+                }
+
+                // Check User Selection
+                if (input.checked) {
+                    userSelected.push(input.value);
+                    if (input.dataset.correct !== "true") {
+                        label.classList.add('opt-wrong'); // Highlight RED if wrong
+                    }
+                }
+                
+                input.disabled = true; // Disable input
+            });
+
+            // 2. Calculate Logic based on Type
+            if (type === 'checkbox') {
+                // For Q21-24: Need to select BOTH correctly to generally get full marks conceptually, 
+                // but usually IELTS counts each letter as 1 mark. 
+                // Here we simply check if all selected are in correct list.
+                // NOTE: IELTS Listening matching usually treats each letter as a separate question number (e.g. 21 and 22).
+                // To simplify table: We will list them.
+                
+                // We won't generate table row here for checkboxes, we handle it specially below.
+                return { user: userSelected, correct: correctValues };
+            } else {
+                // Radio buttons
+                isCorrect = (userSelected.length > 0 && correctValues.includes(userSelected[0]));
+                if(isCorrect) score++;
+
+                // 3. Add to Table
+                tableHTML += `
+                    <tr>
+                        <td>${qId.replace('q','')}</td>
+                        <td>${userSelected.length > 0 ? userSelected[0] : '-'}</td>
+                        <td>${correctValues[0]}</td>
+                        <td class="${isCorrect ? 'status-check' : 'status-cross'}">${isCorrect ? '✅' : '❌'}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        // --- Process Q21 & 22 (Checkboxes) ---
+        // In IELTS, 21 and 22 are usually interchangeable orders.
+        const res21 = processQuestion('q21', 'checkbox');
+        const user21 = res21.user;
+        const corr21 = res21.correct;
+        
+        // Logic: Calculate how many correct matches found
+        let matches21 = 0;
+        user21.forEach(u => { if(corr21.includes(u)) matches21++; });
+        score += matches21;
+
+        // Table Row for 21 & 22
+        // We simulate 21 as first correct answer, 22 as second (arbitrary order for table)
+        tableHTML += `
+            <tr>
+                <td>21-22</td>
+                <td>${user21.join(', ') || '-'}</td>
+                <td>${corr21.join(', ')}</td>
+                <td class="${matches21 === 2 ? 'status-check' : (matches21 === 1 ? 'status-check' : 'status-cross')}">
+                    ${matches21}/2 Correct
+                </td>
+            </tr>
+        `;
+
+        // --- Process Q23 & 24 (Checkboxes) ---
+        const res23 = processQuestion('q23', 'checkbox');
+        const user23 = res23.user;
+        const corr23 = res23.correct;
+        
+        let matches23 = 0;
+        user23.forEach(u => { if(corr23.includes(u)) matches23++; });
+        score += matches23;
+
+        tableHTML += `
+            <tr>
+                <td>23-24</td>
+                <td>${user23.join(', ') || '-'}</td>
+                <td>${corr23.join(', ')}</td>
+                <td class="${matches23 === 2 ? 'status-check' : (matches23 === 1 ? 'status-check' : 'status-cross')}">
+                    ${matches23}/2 Correct
+                </td>
+            </tr>
+        `;
+
+        // --- Process Single Choice Q25 - Q30 ---
+        processQuestion('q25', 'radio');
+        processQuestion('q26', 'radio');
+        processQuestion('q27', 'radio');
+        processQuestion('q28', 'radio');
+        processQuestion('q29', 'radio');
+        processQuestion('q30', 'radio');
+
+        // --- Finalize UI ---
+        document.getElementById('final-score').innerText = `Your Score: ${score} / 10`;
+        document.getElementById('table-body').innerHTML = tableHTML;
+        document.getElementById('result-area').style.display = 'block';
+        
+        document.getElementById('transcript-container').style.display = 'block';
+        document.querySelectorAll('.btn-locate').forEach(btn => btn.style.display = 'block');
+        document.getElementById('submit-btn').style.display = 'none';
+
+        // Auto scroll to results
+        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function locate(id) {
+        document.querySelectorAll('.highlight-active').forEach(e => e.classList.remove('highlight-active'));
+        const target = document.getElementById('loc-' + id);
+        if (target) {
+            target.classList.add('highlight-active');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+</script>
+
+</body>
+</html>
