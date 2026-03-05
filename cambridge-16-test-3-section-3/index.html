@@ -1,35 +1,53 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Cambridge 16 Test 3 Part 3 Quiz</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambridge 16 Test 3 Part 3 Listening Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .question { margin-bottom: 20px; }
+        .audio-player { margin-bottom: 20px; }
+    </style>
 </head>
 <body>
-    <h1>Cambridge 16 Test 3 Part 3 Quiz</h1>
-    <audio controls>
-        <source src="audio/test_3_part_3.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <ol>
-        <li>
-            <p>Question 1: What did the speaker say about...?</p>
-            <input type="text" placeholder="Your answer here">
-        </li>
-        <li>
-            <p>Question 2: What is the primary purpose of...?</p>
-            <input type="text" placeholder="Your answer here">
-        </li>
-        <li>
-            <p>Question 3: How does the speaker describe...?</p>
-            <input type="text" placeholder="Your answer here">
-        </li>
-        <!-- Add additional questions as necessary -->
-    </ol>
-    <button onclick="submitAnswers()">Submit</button>
+    <h1>Cambridge 16 Test 3 Part 3 Listening Quiz</h1>
+    <div class="audio-player">
+        <audio controls>
+            <source src="path_to_audio.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+    <div class="questions">
+        <div class="question" data-correct="true">
+            <p>1. What is the main topic discussed in Part 3?</p>
+            <input type="radio" name="q1" value="a"> A) Topic A<br>
+            <input type="radio" name="q1" value="b"> B) Topic B<br>
+            <input type="radio" name="q1" value="c"> C) Topic C<br>
+            <input type="radio" name="q1" value="d"> D) Topic D<br>
+        </div>
+        <div class="question">
+            <p>2. Who are the speakers in the discussion?</p>
+            <input type="radio" name="q2" value="a"> A) Speaker A<br>
+            <input type="radio" name="q2" value="b"> B) Speaker B<br>
+            <input type="radio" name="q2" value="c"> C) Speaker C<br>
+            <input type="radio" name="q2" value="d"> D) Speaker D<br>
+        </div>
+        <div class="question" data-correct="true">
+            <p>3. What solution do the speakers propose?</p>
+            <input type="radio" name="q3" value="a"> A) Solution A<br>
+            <input type="radio" name="q3" value="b"> B) Solution B<br>
+            <input type="radio" name="q3" value="c"> C) Solution C<br>
+            <input type="radio" name="q3" value="d"> D) Solution D<br>
+        </div>
+    </div>
     <script>
-        function submitAnswers() {
-            // Functionality for submitting answers
-            alert('Answers submitted!');
-        }
+        // JavaScript functionality (if needed)
+        document.querySelectorAll('input[type="radio"]').forEach(function (elem) {
+            elem.addEventListener('change', function () {
+                // Logic to handle answer selection
+            });
+        });
     </script>
 </body>
 </html>
