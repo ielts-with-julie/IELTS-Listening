@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Listening - Cam 16 Test 3 Part 3</title>
+    <title>IELTS Listening - Cam 14 Test 2 Section 3</title>
     <style>
         :root {
             --primary: #004a99;
@@ -24,200 +24,331 @@
 
         h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
         
-        /* Audio Player */
         .audio-section { position: sticky; top: 0; background: white; padding: 20px 0; z-index: 100; border-bottom: 1px solid #ddd; text-align: center; margin-bottom: 30px; }
         audio { width: 100%; max-width: 600px; }
 
-        /* Question Styling */
         .section { margin-bottom: 40px; }
         .section h3 { background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; }
         .instruction { font-style: italic; color: #555; margin-bottom: 15px; }
-
+        
+        /* Multiple Choice Styles */
         .q-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; position: relative; }
         .q-text { font-weight: bold; margin-bottom: 10px; display: block; padding-right: 90px; }
-        
         .options-grid { display: grid; gap: 8px; }
-        
-        /* Option Styling */
         .option-item { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; border-radius: 6px; border: 1px solid transparent; transition: 0.2s; background: #fff; }
         .option-item:hover { background: #f0f0f0; border-color: #ccc; }
+
+        /* MATCHING SECTION STYLES (UPDATED) */
+        .matching-box { background: #eef4fa; padding: 15px; border-radius: 8px; border: 1px solid #cce0f5; margin-bottom: 20px; }
+        .matching-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        .matching-list li { font-size: 0.9rem; background: white; padding: 4px 8px; border-radius: 4px; border: 1px solid #ddd; }
+
+        .matching-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+        .matching-q-text { font-weight: bold; flex: 1; min-width: 200px; }
         
-        /* Highlight States */
+        /* Container cho các nút A-H */
+        .matching-options { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        
+        .m-lbl { cursor: pointer; display: inline-block; }
+        .m-lbl input { display: none; }
+        .m-lbl span { 
+            display: flex; width: 32px; height: 32px; align-items: center; justify-content: center; 
+            border: 1px solid #ccc; border-radius: 4px; font-weight: bold; background: #fff; 
+            transition: 0.2s; font-size: 0.85rem; color: #555;
+        }
+        .m-lbl:hover span { background: #eee; border-color: #aaa; }
+        .m-lbl input:checked + span { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Correct/Wrong Styles */
         .opt-correct { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #0f5132; font-weight: bold; }
         .opt-wrong { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #842029; text-decoration: line-through; opacity: 0.8; }
+        
+        /* Matching Button Result Styles */
+        .match-btn-correct span { background-color: var(--correct-bg) !important; border: 2px solid var(--correct-border) !important; color: #0f5132 !important; }
+        .match-btn-wrong span { background-color: var(--wrong-bg) !important; border: 2px solid var(--wrong-border) !important; color: #842029 !important; text-decoration: line-through; }
 
         /* Locate Button */
         .btn-locate { display: none; padding: 5px 10px; background: var(--locate-btn); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; position: absolute; top: 10px; right: 10px; font-size: 0.8rem; z-index: 10; }
         .btn-locate:hover { background: #8e44ad; }
         
         /* Transcript */
-        #transcript-container { display: none; margin-top: 40px; padding: 30px; background: #fffcf0; border: 2px dashed #e67e22; border-radius: 12px; line-height: 1.8; }
-        .speaker { font-weight: bold; color: var(--primary); }
+        #transcript-container { display: none; margin-top: 40px; padding: 30px; background: #fffcf0; border: 2px dashed #e67e22; border-radius: 12px; line-height: 1.8; color: #333; }
+        #transcript-container p { margin-bottom: 12px; }
+        .speaker { font-weight: bold; color: var(--primary); min-width: 80px; display: inline-block; }
         .highlight-active { background-color: var(--highlight); font-weight: bold; padding: 2px 5px; box-shadow: 0 0 10px var(--highlight); border-bottom: 2px solid red; border-radius: 3px; }
 
-        /* Footer & Table */
         .footer { text-align: center; padding: 30px; margin-top: 20px;}
         .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
         
-        /* Result Table */
         #result-area { display: none; margin-top: 30px; }
         .score-box { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; text-align: center; }
-        
         table.score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
         table.score-table th, table.score-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         table.score-table th { background-color: var(--primary); color: white; }
-        table.score-table tr:nth-child(even) { background-color: #f9f9f9; }
-        .status-check { color: green; font-weight: bold; }
-        .status-cross { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    <h1>IELTS Listening: Cam 16 Test 3 Part 3</h1>
+    <h1>IELTS Listening: Cam 14 Test 2 Section 3</h1>
 
     <div class="audio-section">
-        <p><i>Listen to the conversation between two students, Adam and Rosie.</i></p>
+        <p><i>Woolly mammoths on St Paul’s Island</i></p>
         <audio id="main-audio" controls>
-            <source src="https://ise.edu.vn/wp-content/uploads/2023/06/Test-3-Part-3.mp3" type="audio/mpeg">
+            <source src="https://ieltstrainingonline.com/wp-content/uploads/2021/07/Cam14-Test2-Section3.mp3?_=3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
 
     <div class="section">
-        <h3>Questions 21 and 22</h3>
-        <p class="instruction">Choose TWO letters, A-E. Which TWO points does Adam make about his experiment on artificial sweeteners?</p>
-        <div class="q-block" id="block-21-22">
-            <button class="btn-locate" onclick="locate('21_22', 50)">📍 Locate</button>
+        <h3>Questions 21-24</h3>
+        <p class="instruction">Choose the correct letter, A, B or C.</p>
+        
+        <div class="q-block" id="block-21">
+            <button class="btn-locate" onclick="locate('21', 94)">📍 Locate</button>
+            <span class="q-text">21. How will Rosie and Martin introduce their presentation?</span>
             <div class="options-grid">
-                <label class="option-item"><input type="checkbox" name="q21" value="A"> A. The results were what he had predicted.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="B"> B. The experiment was simple to set up.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="C"> C. A large sample of people was tested.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="D" data-correct="true"> D. The subjects were unaware of what they were drinking.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="E" data-correct="true"> E. The test was repeated several times for each person.</label>
+                <label class="option-item"><input type="radio" name="q21" value="A"> A. with a drawing of woolly mammoths in their natural habit</label>
+                <label class="option-item"><input type="radio" name="q21" value="B" data-correct="true"> B. with a timeline showing when woolly mammoths lived</label>
+                <label class="option-item"><input type="radio" name="q21" value="C"> C. with a video clip about woolly mammoths</label>
             </div>
         </div>
-    </div>
 
-    <div class="section">
-        <h3>Questions 23 and 24</h3>
-        <p class="instruction">Choose TWO letters, A-E. Which TWO problems did Rosie have when measuring the fat content of nuts?</p>
-        <div class="q-block" id="block-23-24">
-            <button class="btn-locate" onclick="locate('23_24', 90)">📍 Locate</button>
+        <div class="q-block" id="block-22">
+            <button class="btn-locate" onclick="locate('22', 134)">📍 Locate</button>
+            <span class="q-text">22. What was surprising about the mammoth tooth found by Russell Graham?</span>
             <div class="options-grid">
-                <label class="option-item"><input type="checkbox" name="q23" value="A"> A. She used the wrong sort of nuts.</label>
-                <label class="option-item"><input type="checkbox" name="q23" value="B"> B. She used an unsuitable chemical.</label>
-                <label class="option-item"><input type="checkbox" name="q23" value="C" data-correct="true"> C. She did not grind the nuts finely enough.</label>
-                <label class="option-item"><input type="checkbox" name="q23" value="D"> D. The information on the nut package was incorrect.</label>
-                <label class="option-item"><input type="checkbox" name="q23" value="E" data-correct="true"> E. The weighing scales may have been unsuitable.</label>
+                <label class="option-item"><input type="radio" name="q22" value="A"> A. It was still embedded in the mammoth’s jawbone.</label>
+                <label class="option-item"><input type="radio" name="q22" value="B"> B. It was from an unknown species of mammoth.</label>
+                <label class="option-item"><input type="radio" name="q22" value="C" data-correct="true"> C. It was not as old as mammoth remains from elsewhere.</label>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-23">
+            <button class="btn-locate" onclick="locate('23', 180)">📍 Locate</button>
+            <span class="q-text">23. The students will use an animated diagram to demonstrate how the mammoths</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q23" value="A" data-correct="true"> A. became isolated on the island.</label>
+                <label class="option-item"><input type="radio" name="q23" value="B"> B. spread from the island to other areas.</label>
+                <label class="option-item"><input type="radio" name="q23" value="C"> C. coexisted with other animals on the island.</label>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-24">
+            <button class="btn-locate" onclick="locate('24', 222)">📍 Locate</button>
+            <span class="q-text">24. According to Martin, what is unusual about the date of the mammoths’ extinction on the island?</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q24" value="A" data-correct="true"> A. how exact it is</label>
+                <label class="option-item"><input type="radio" name="q24" value="B"> B. how early it is</label>
+                <label class="option-item"><input type="radio" name="q24" value="C"> C. how it was established</label>
             </div>
         </div>
     </div>
 
     <div class="section">
         <h3>Questions 25-30</h3>
-        <p class="instruction">Choose the correct letter, A, B or C.</p>
+        <p class="instruction">What action will the students take for each of the following sections? Choose the correct letter A-H.</p>
         
+        <div class="matching-box">
+            <ul class="matching-list">
+                <li><b>A.</b> interactive</li>
+                <li><b>B.</b> reduce visuals</li>
+                <li><b>C.</b> opinions</li>
+                <li><b>D.</b> contact researcher</li>
+                <li><b>E.</b> detailed notes</li>
+                <li><b>F.</b> info online</li>
+                <li><b>G.</b> timing</li>
+                <li><b>H.</b> organise clearly</li>
+            </ul>
+        </div>
+
         <div class="q-block" id="block-25">
-            <button class="btn-locate" onclick="locate('25', 202)">📍 Locate</button>
-            <span class="q-text">25. Adam suggests that restaurants could reduce obesity if their menus</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q25" value="A"> A. offered fewer options.</label>
-                <label class="option-item"><input type="radio" name="q25" value="B"> B. had more low-calorie foods.</label>
-                <label class="option-item"><input type="radio" name="q25" value="C" data-correct="true"> C. were organised in a particular way.</label>
+            <button class="btn-locate" onclick="locate('25', 230)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">25. Introduction</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q25" value="A"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="C"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="D"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="E" data-correct="true"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="G"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q25" value="H"><span>H</span></label>
+                </div>
             </div>
         </div>
 
         <div class="q-block" id="block-26">
-            <button class="btn-locate" onclick="locate('26', 222)">📍 Locate</button>
-            <span class="q-text">26. The students agree that food manufacturers deliberately</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q26" value="A"> A. make calorie counts hard to understand.</label>
-                <label class="option-item"><input type="radio" name="q26" value="B" data-correct="true"> B. fail to provide accurate calorie counts.</label>
-                <label class="option-item"><input type="radio" name="q26" value="C"> C. use ineffective methods to reduce calories.</label>
+            <button class="btn-locate" onclick="locate('26', 255)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">26. Discovery of the mammoth tooth</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q26" value="A"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="C"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="D" data-correct="true"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="E"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="G"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q26" value="H"><span>H</span></label>
+                </div>
             </div>
         </div>
 
         <div class="q-block" id="block-27">
-            <button class="btn-locate" onclick="locate('27', 258)">📍 Locate</button>
-            <span class="q-text">27. What does Rosie say about levels of exercise in England?</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q27" value="A"> A. The amount recommended is much too low.</label>
-                <label class="option-item"><input type="radio" name="q27" value="B" data-correct="true"> B. Most people overestimate how much they do.</label>
-                <label class="option-item"><input type="radio" name="q27" value="C"> C. Women now exercise more than they used to.</label>
+            <button class="btn-locate" onclick="locate('27', 275)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">27. Initial questions asked by the researchers</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q27" value="A" data-correct="true"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="C"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="D"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="E"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="G"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q27" value="H"><span>H</span></label>
+                </div>
             </div>
         </div>
 
         <div class="q-block" id="block-28">
-            <button class="btn-locate" onclick="locate('28', 298)">📍 Locate</button>
-            <span class="q-text">28. Adam refers to the location and width of stairs in a train station to illustrate</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q28" value="A" data-correct="true"> A. practical changes that can influence people's behaviour.</label>
-                <label class="option-item"><input type="radio" name="q28" value="B"> B. methods of helping people who have mobility problems.</label>
-                <label class="option-item"><input type="radio" name="q28" value="C"> C. ways of preventing accidents by controlling crowd movement.</label>
+            <button class="btn-locate" onclick="locate('28', 295)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">28. Further research carried out on the island</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q28" value="A"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="C"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="D"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="E"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="G"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q28" value="H" data-correct="true"><span>H</span></label>
+                </div>
             </div>
         </div>
 
         <div class="q-block" id="block-29">
-            <button class="btn-locate" onclick="locate('29', 330)">📍 Locate</button>
-            <span class="q-text">29. What do the students agree about including reference to exercise in their presentation?</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q29" value="A"> A. They should probably leave it out.</label>
-                <label class="option-item"><input type="radio" name="q29" value="B"> B. They need to do more research on it.</label>
-                <label class="option-item"><input type="radio" name="q29" value="C" data-correct="true"> C. They should discuss this with their tutor.</label>
+            <button class="btn-locate" onclick="locate('29', 310)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">29. Findings and possible explanations</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q29" value="A"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="C"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="D"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="E"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="G" data-correct="true"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q29" value="H"><span>H</span></label>
+                </div>
             </div>
         </div>
 
         <div class="q-block" id="block-30">
-            <button class="btn-locate" onclick="locate('30', 355)">📍 Locate</button>
-            <span class="q-text">30. What are the students going to do next for their presentation?</span>
-            <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q30" value="A"> A. prepare some slides for it</label>
-                <label class="option-item"><input type="radio" name="q30" value="B"> B. find out how long they have for it</label>
-                <label class="option-item"><input type="radio" name="q30" value="C" data-correct="true"> C. decide on its content and organisation</label>
+            <button class="btn-locate" onclick="locate('30', 325)">📍 Locate</button>
+            <div class="matching-row">
+                <span class="matching-q-text">30. Relevance to the present day</span>
+                <div class="matching-options">
+                    <label class="m-lbl"><input type="radio" name="q30" value="A"><span>A</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="B"><span>B</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="C" data-correct="true"><span>C</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="D"><span>D</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="E"><span>E</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="F"><span>F</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="G"><span>G</span></label>
+                    <label class="m-lbl"><input type="radio" name="q30" value="H"><span>H</span></label>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="footer">
         <button class="btn-submit" id="submit-btn" onclick="submitTest()">Submit to View Transcript</button>
-        
         <div id="result-area">
             <div class="score-box" id="final-score"></div>
-            <h3>Detailed Result Table</h3>
             <table class="score-table">
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Your Answer</th>
-                        <th>Correct Answer</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    </tbody>
+                <thead><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Status</th></tr></thead>
+                <tbody id="table-body"></tbody>
             </table>
         </div>
     </div>
 
     <div id="transcript-container">
-        <h2 style="color: var(--secondary);">Transcript</h2>
-        <p><span class="speaker">ADAM:</span> Rosie, I've been thinking about our presentation on nutrition and obesity...</p>
-        <p><span class="speaker">ROSIE:</span> Me too. What about your experiment on artificial sweeteners?</p>
-        <p><span class="speaker">ADAM:</span> <span id="loc-21_22">It went well. I used a blind test - the subjects didn't know which drink had the sweetener and which had sugar. And I made sure they each did the test three times to ensure the results were consistent.</span></p>
-        <p><span class="speaker">ROSIE:</span> My nut experiment was harder. <span id="loc-23_24">I think the main problem was I didn't grind them into a fine enough powder, so the chemical didn't extract all the fat. And also, the scales I was using were only accurate to the nearest gram - I needed something much more precise.</span></p>
-        <p><span class="speaker">ADAM:</span> Interesting. I read a study about restaurant menus. <span id="loc-25">It suggested that if you put the healthiest, low-calorie options at the very beginning of the menu, people are much more likely to choose them. It's all about how you organise the information.</span></p>
-        <p><span class="speaker">ROSIE:</span> True. But food labels are a nightmare. <span id="loc-26">We agreed that manufacturers often make it nearly impossible to calculate the actual calorie count, like giving figures for 100g when the pack is 145g.</span></p>
-        <p><span class="speaker">ROSIE:</span> And exercise! <span id="loc-27">Studies show that most people in England claim they are active, but they significantly overestimate the amount of exercise they actually do.</span></p>
-        <p><span class="speaker">ADAM:</span> <span id="loc-28">It's like that train station design where they made the stairs wider and more central than the escalator. It naturally nudged people to take the stairs without even thinking about it. Simple physical changes like that can really change behaviour.</span></p>
-        <p><span class="speaker">ROSIE:</span> Should we include that? <span class="speaker">ADAM:</span> <span id="loc-29">I'm not sure. Let's ask our tutor Dr. Green what she thinks.</span></p>
-        <p><span class="speaker">ROSIE:</span> Okay. What's next? <span class="speaker">ADAM:</span> <span id="loc-30">Well, before we do anything else, we really need to sit down and map out exactly what's going in and the overall structure. We need a clear plan.</span></p>
+        <h2>Transcript</h2>
+        
+        <p><span class="speaker">TUTOR:</span> So, Rosie and Martin, let’s look at what you’ve got for your presentation on woolly mammoths.</p>
+        
+        <p><span class="speaker">ROSIE:</span> OK, we’ve got a short outline here.</p>
+        
+        <p><span class="speaker">TUTOR:</span> Thanks. So it’s about a research project in North America?</p>
+        
+        <p><span class="speaker">MARTIN:</span> Yes. But we thought we needed something general about woolly mammoths in our introduction, to establish that they were related to our modern elephant, and they lived thousands of years ago in the last ice age.</p>
+        
+        <p><span class="speaker">ROSIE:</span> Maybe we could show a video clip of a cartoon about mammoths. But that’d be a bit childish. <span id="loc-21">Or we could have a diagram, it could be a timeline to show when they lived, with illustrations?</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> Or we could just show a drawing of them walking in the ice? No, let’s go with your last suggestion.</p>
+        
+        <p><span class="speaker">TUTOR:</span> Good. Then you’re describing the discovery of the mammoth tooth on St Paul’s Island in Alaska, and why it was significant.</p>
+        
+        <p><span class="speaker">ROSIE:</span> Yes. The tooth was found by a man called Russell Graham. He picked it up from under a rock in a cave. He knew it was special – for a start it was in really good condition, as if it had been just extracted from the animal’s jawbone. Anyway, they found it was 6,500 years old.</p>
+        
+        <p><span class="speaker">TUTOR:</span> So why was that significant?</p>
+        
+        <p><span class="speaker">ROSIE:</span> Well <span id="loc-22">the mammoth bones previously found on the North American mainland were much less recent than that. So this was really amazing.</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> Then we’re making an animated diagram to show the geography of the area in prehistoric times. So originally, St Paul’s Island wasn’t an island, it was connected to the mainland, and mammoths and other animals like bears were able to roam around the whole area.</p>
+        
+        <p><span class="speaker">ROSIE:</span> Then the climate warmed up and the sea level began to rise, and the island got cut off from the mainland. So <span id="loc-23">those mammoths on the island couldn’t escape; they had to stay on the island.</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> And in fact the species survived there for thousands of years after they’d become extinct on the mainland.</p>
+        
+        <p><span class="speaker">TUTOR:</span> So why do you think they died out on the mainland?</p>
+        
+        <p><span class="speaker">ROSIE:</span> No one’s sure.</p>
+        
+        <p><span class="speaker">MARTIN:</span> Anyway, next we’ll explain how Graham and his team identified the date when the mammoths became extinct on the island. They concluded that <span id="loc-24">the extinction happened 5,600 years ago, which is a very precise time for a prehistoric extinction.</span> It’s based on samples they took from mud at the bottom of a lake on the island. They analysed it to find out what had fallen in over time – bits of plants, volcanic ash and even DNA from the mammoths themselves. It’s standard procedure, but it took nearly two years to do.</p>
+        
+        <hr style="border-top: 2px dashed #ddd; margin: 30px 0;">
+        <p><i>(Now listen and answer questions 25 to 30)</i></p>
+
+        <p><span class="speaker">TUTOR:</span> So why don’t you quickly go through the main sections of your presentation and discuss what action’s needed for each part?</p>
+        
+        <p><span class="speaker">MARTIN:</span> OK. So for the introduction, we’re using a visual, so once we’ve prepared that we’re done.</p>
+        
+        <p><span class="speaker">ROSIE:</span> I’m not sure. I think <span id="loc-25">we need to write down all the ideas we want to include here, not just rely on memory.</span> How we begin the presentation is so important …</p>
+        
+        <p><span class="speaker">MARTIN:</span> You’re right.</p>
+        
+        <p><span class="speaker">ROSIE:</span> The discovery of the mammoth tooth is probably the most dramatic part, but we don’t have that much information, only what we got from the online article. I thought maybe <span id="loc-26">we could get in touch with the researcher who led the team and ask him to tell us a bit more.</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> Great idea. What about the section with the initial questions asked by the researchers? We’ve got a lot on that but we need to make it interesting.</p>
+        
+        <p><span class="speaker">ROSIE:</span> We could <span id="loc-27">ask the audience to suggest some questions about it and then see how many of them we can answer.</span> I don’t think it would take too long.</p>
+        
+        <p><span class="speaker">TUTOR:</span> Yes that would add a bit of variety.</p>
+        
+        <p><span class="speaker">MARTIN:</span> Then the section on further research carried out on the island – analysing the mud in the lake. I wonder if we’ve actually got too much information here, should we cut some?</p>
+        
+        <p><span class="speaker">ROSIE:</span> I don’t think so, but it’s all a bit muddled at present.</p>
+        
+        <p><span class="speaker">MARTIN:</span> Yes, <span id="loc-28">maybe it would be better if it followed a chronological pattern.</span></p>
+        
+        <p><span class="speaker">ROSIE:</span> I think so. The findings and possible explanations section is just about ready, but we need to practice it <span id="loc-29">so we’re sure it won’t overrun.</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> I think it should be OK, but yes, let’s make sure.</p>
+        
+        <p><span class="speaker">TUTOR:</span> In the last section, relevance to the present day, you’ve got some good ideas but this is where you need to move away from the ideas of others and <span id="loc-30">give your own viewpoint.</span></p>
+        
+        <p><span class="speaker">MARTIN:</span> OK, we’ll think about that. Now shall we …</p>
     </div>
 </div>
 
 <script>
     function locate(id, seconds) {
-        // 1. Audio Sync - Jump to timestamp
+        // 1. Audio Sync
         const audio = document.getElementById('main-audio');
         audio.currentTime = seconds;
         audio.play();
@@ -235,112 +366,51 @@
         let score = 0;
         let tableHTML = "";
         
-        // --- Helper Function to Process Questions ---
-        function processQuestion(qId, type, correctAnsDisplay) {
+        function processQuestion(qId, type) {
             const inputs = document.getElementsByName(qId);
-            let userSelected = [];
+            let userSelected = "";
+            let correctAnswer = "";
             let isCorrect = false;
-            let correctValues = [];
 
-            // 1. Identify User Selection & Correct Values
             inputs.forEach(input => {
                 const label = input.parentElement;
                 
-                // Collect Correct Values for internal logic
+                // Identify Correct Answer
                 if (input.dataset.correct === "true") {
-                    correctValues.push(input.value);
-                    label.classList.add('opt-correct'); // Highlight GREEN always
+                    correctAnswer = input.value;
+                    if(type === 'matching') label.classList.add('match-btn-correct');
+                    else label.classList.add('opt-correct');
                 }
 
-                // Check User Selection
+                // Check User selection
                 if (input.checked) {
-                    userSelected.push(input.value);
+                    userSelected = input.value;
                     if (input.dataset.correct !== "true") {
-                        label.classList.add('opt-wrong'); // Highlight RED if wrong
+                        if(type === 'matching') label.classList.add('match-btn-wrong');
+                        else label.classList.add('opt-wrong');
                     }
                 }
-                
-                input.disabled = true; // Disable input
+                input.disabled = true;
             });
 
-            // 2. Calculate Logic based on Type
-            if (type === 'checkbox') {
-                return { user: userSelected, correct: correctValues };
-            } else {
-                // Radio buttons
-                isCorrect = (userSelected.length > 0 && correctValues.includes(userSelected[0]));
-                if(isCorrect) score++;
+            isCorrect = (userSelected === correctAnswer);
+            if(isCorrect) score++;
 
-                // 3. Add to Table
-                tableHTML += `
-                    <tr>
-                        <td>${qId.replace('q','')}</td>
-                        <td>${userSelected.length > 0 ? userSelected[0] : '-'}</td>
-                        <td>${correctValues[0]}</td>
-                        <td class="${isCorrect ? 'status-check' : 'status-cross'}">${isCorrect ? '✅' : '❌'}</td>
-                    </tr>
-                `;
-            }
+            tableHTML += `<tr><td>${qId.slice(1)}</td><td>${userSelected || '-'}</td><td>${correctAnswer}</td><td>${isCorrect ? '✅' : '❌'}</td></tr>`;
         }
 
-        // --- Process Q21 & 22 (Checkboxes) ---
-        const res21 = processQuestion('q21', 'checkbox');
-        const user21 = res21.user;
-        const corr21 = res21.correct;
-        
-        let matches21 = 0;
-        user21.forEach(u => { if(corr21.includes(u)) matches21++; });
-        score += matches21;
+        for(let i=21; i<=24; i++) processQuestion('q'+i, 'radio');
+        for(let i=25; i<=30; i++) processQuestion('q'+i, 'matching');
 
-        tableHTML += `
-            <tr>
-                <td>21-22</td>
-                <td>${user21.join(', ') || '-'}</td>
-                <td>${corr21.join(', ')}</td>
-                <td class="${matches21 === 2 ? 'status-check' : (matches21 === 1 ? 'status-check' : 'status-cross')}">
-                    ${matches21}/2 Correct
-                </td>
-            </tr>
-        `;
-
-        // --- Process Q23 & 24 (Checkboxes) ---
-        const res23 = processQuestion('q23', 'checkbox');
-        const user23 = res23.user;
-        const corr23 = res23.correct;
-        
-        let matches23 = 0;
-        user23.forEach(u => { if(corr23.includes(u)) matches23++; });
-        score += matches23;
-
-        tableHTML += `
-            <tr>
-                <td>23-24</td>
-                <td>${user23.join(', ') || '-'}</td>
-                <td>${corr23.join(', ')}</td>
-                <td class="${matches23 === 2 ? 'status-check' : (matches23 === 1 ? 'status-check' : 'status-cross')}">
-                    ${matches23}/2 Correct
-                </td>
-            </tr>
-        `;
-
-        // --- Process Single Choice Q25 - Q30 ---
-        processQuestion('q25', 'radio');
-        processQuestion('q26', 'radio');
-        processQuestion('q27', 'radio');
-        processQuestion('q28', 'radio');
-        processQuestion('q29', 'radio');
-        processQuestion('q30', 'radio');
-
-        // --- Finalize UI ---
         document.getElementById('final-score').innerText = `Your Score: ${score} / 10`;
         document.getElementById('table-body').innerHTML = tableHTML;
         document.getElementById('result-area').style.display = 'block';
-        
         document.getElementById('transcript-container').style.display = 'block';
+        
+        // Show locate buttons
         document.querySelectorAll('.btn-locate').forEach(btn => btn.style.display = 'block');
         document.getElementById('submit-btn').style.display = 'none';
 
-        // Auto scroll to results
         document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
     }
 </script>
