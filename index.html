@@ -1,22 +1,408 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Julie's IELTS Listening | Coming Soon</title>
+    <title>IELTS Listening - Bridge to Brisbane Fun Run</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background-color: #f4f7f6; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        p { color: #7f8c8d; line-height: 1.6; }
-        .btn { display: inline-block; margin-top: 20px; padding: 10px 25px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; }
+        :root {
+            --primary: #004a99;
+            --secondary: #e67e22;
+            --locate-btn: #9b59b6;
+            --bg-gray: #f4f6f8;
+            --correct-bg: #d1e7dd;
+            --correct-border: #0f5132;
+            --wrong-bg: #f8d7da;
+            --wrong-border: #842029;
+            --highlight: #ffff00;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-gray); margin: 0; padding: 20px; display: flex; justify-content: center; }
+
+        .main-container { max-width: 900px; width: 100%; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        
+        /* Custom Audio Player Styling */
+        .audio-section { 
+            position: sticky; top: 0; background: white; padding: 15px; z-index: 100; 
+            border-bottom: 1px solid #ddd; text-align: center; margin-bottom: 30px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .custom-player {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: #f1f3f4; padding: 10px 20px; border-radius: 50px;
+            max-width: 500px; margin: 0 auto;
+        }
+
+        .play-btn {
+            width: 40px; height: 40px; border-radius: 50%; border: none;
+            background: var(--primary); color: white; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: 0.2s;
+        }
+        .play-btn:hover { transform: scale(1.1); }
+
+        .time-display { font-family: monospace; font-size: 0.9rem; color: #555; }
+        
+        /* Hidden YouTube Iframe */
+        #youtube-player { display: none; }
+
+        .section { margin-bottom: 40px; }
+        .section h3 { background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; }
+        .instruction { font-style: italic; color: #555; margin-bottom: 15px; }
+        
+        /* Map Image */
+        .map-container { text-align: center; margin-bottom: 20px; }
+        .map-container img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; }
+
+        /* Multiple Choice Styles */
+        .q-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; position: relative; }
+        .q-text { font-weight: bold; margin-bottom: 10px; display: block; padding-right: 90px; }
+        .options-grid { display: grid; gap: 8px; }
+        .option-item { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; border-radius: 6px; border: 1px solid transparent; transition: 0.2s; background: #fff; }
+        .option-item:hover { background: #f0f0f0; border-color: #ccc; }
+
+        /* Matching/Labeling Styles */
+        .matching-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;}
+        .matching-q-text { font-weight: bold; min-width: 150px; }
+        
+        .matching-options { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        
+        .m-lbl { cursor: pointer; display: inline-block; }
+        .m-lbl input { display: none; }
+        .m-lbl span { 
+            display: flex; width: 30px; height: 30px; align-items: center; justify-content: center; 
+            border: 1px solid #ccc; border-radius: 4px; font-weight: bold; background: #fff; 
+            transition: 0.2s; font-size: 0.8rem; color: #555;
+        }
+        .m-lbl:hover span { background: #eee; border-color: #aaa; }
+        .m-lbl input:checked + span { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Correct/Wrong Styles */
+        .opt-correct { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #0f5132; font-weight: bold; }
+        .opt-wrong { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #842029; text-decoration: line-through; opacity: 0.8; }
+        
+        .match-btn-correct span { background-color: var(--correct-bg) !important; border: 2px solid var(--correct-border) !important; color: #0f5132 !important; }
+        .match-btn-wrong span { background-color: var(--wrong-bg) !important; border: 2px solid var(--wrong-border) !important; color: #842029 !important; text-decoration: line-through; }
+
+        /* Locate Button */
+        .btn-locate { display: none; padding: 5px 10px; background: var(--locate-btn); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; position: absolute; top: 10px; right: 10px; font-size: 0.8rem; z-index: 10; }
+        .btn-locate:hover { background: #8e44ad; }
+        
+        /* Transcript */
+        #transcript-container { display: none; margin-top: 40px; padding: 30px; background: #fffcf0; border: 2px dashed #e67e22; border-radius: 12px; line-height: 1.8; color: #333; }
+        #transcript-container p { margin-bottom: 12px; }
+        .highlight-active { background-color: var(--highlight); font-weight: bold; padding: 2px 5px; box-shadow: 0 0 10px var(--highlight); border-bottom: 2px solid red; border-radius: 3px; }
+
+        .footer { text-align: center; padding: 30px; margin-top: 20px;}
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+        
+        #result-area { display: none; margin-top: 30px; }
+        .score-box { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; text-align: center; }
+        table.score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+        table.score-table th, table.score-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        table.score-table th { background-color: var(--primary); color: white; }
     </style>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Chào mừng bạn đến với IELTS with Julie! 🎧</h1>
-        <p>Trang web hiện đang được nâng cấp để mang lại trải nghiệm luyện nghe tốt nhất cho bạn. Quay lại sớm nhé!</p>
-        <a href="https://github.com/ielts-with-julie" class="btn">Theo dõi dự án trên GitHub</a>
+
+<div class="main-container">
+    <h1>Bridge to Brisbane Fun Run</h1>
+    <p style="text-align: center; color: #666;">IELTS Recent Actual Test Vol 4 - Test 7 - Section 2</p>
+
+    <div class="audio-section">
+        <div class="custom-player">
+            <button class="play-btn" id="play-pause-btn" onclick="togglePlay()">▶</button>
+            <div class="time-display">
+                <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #888; margin-left: 10px;">(Audio Source: YouTube)</div>
+        </div>
+        <div id="youtube-player"></div>
     </div>
+
+    <div class="section">
+        <h3>Questions 1-4</h3>
+        <p class="instruction">Choose the correct letter, A, B or C.</p>
+        
+        <div class="q-block" id="block-1">
+            <button class="btn-locate" onclick="locate('1', 83)">📍 Locate (1:23)</button>
+            <span class="q-text">1. On the day of the race the speaker recommends parking</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q1" value="A" data-correct="true"> A. in the sports ground.</label>
+                <label class="option-item"><input type="radio" name="q1" value="B"> B. by the river.</label>
+                <label class="option-item"><input type="radio" name="q1" value="C"> C. in the shopping centre.</label>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-2">
+            <button class="btn-locate" onclick="locate('2', 115)">📍 Locate (1:55)</button>
+            <span class="q-text">2. The timing Chip should be attached to</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q2" value="A"> A. the shirt or singlet.</label>
+                <label class="option-item"><input type="radio" name="q2" value="B" data-correct="true"> B. a shoe.</label>
+                <label class="option-item"><input type="radio" name="q2" value="C"> C. the wristband.</label>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-3">
+            <button class="btn-locate" onclick="locate('3', 141)">📍 Locate (2:21)</button>
+            <span class="q-text">3. Which group will run first?</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q3" value="A" data-correct="true"> A. yellow</label>
+                <label class="option-item"><input type="radio" name="q3" value="B"> B. red</label>
+                <label class="option-item"><input type="radio" name="q3" value="C"> C. purple</label>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-4">
+            <button class="btn-locate" onclick="locate('4', 165)">📍 Locate (2:45)</button>
+            <span class="q-text">4. The race organisers still need to find volunteers to help with</span>
+            <div class="options-grid">
+                <label class="option-item"><input type="radio" name="q4" value="A"> A. giving first aid.</label>
+                <label class="option-item"><input type="radio" name="q4" value="B" data-correct="true"> B. handing out water.</label>
+                <label class="option-item"><input type="radio" name="q4" value="C"> C. starting the race.</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Questions 5-10</h3>
+        <p class="instruction">Label the map below. Write the correct letter, A-I, next to questions 5-10.</p>
+        
+        <div class="map-container">
+            <img src="https://images.mini-ielts.com/images/map.png" alt="Bridge to Brisbane Map">
+        </div>
+
+        <div class="matching-box">
+            <script>
+                function getOptionsHTML(qId, correctVal) {
+                    let html = `<div class="matching-options">`;
+                    const options = ['A','B','C','D','E','F','G','H','I'];
+                    options.forEach(opt => {
+                        const isCorrect = (opt === correctVal) ? 'data-correct="true"' : '';
+                        html += `<label class="m-lbl"><input type="radio" name="q${qId}" value="${opt}" ${isCorrect}><span>${opt}</span></label>`;
+                    });
+                    html += `</div>`;
+                    return html;
+                }
+            </script>
+
+            <div class="q-block" id="block-5">
+                <button class="btn-locate" onclick="locate('5', 233)">📍 Locate (3:53)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">5. Stage</span>
+                    <div id="opts-5"></div>
+                </div>
+            </div>
+
+            <div class="q-block" id="block-6">
+                <button class="btn-locate" onclick="locate('6', 253)">📍 Locate (4:13)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">6. T-shirt Stand</span>
+                    <div id="opts-6"></div>
+                </div>
+            </div>
+
+            <div class="q-block" id="block-7">
+                <button class="btn-locate" onclick="locate('7', 264)">📍 Locate (4:24)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">7. Bag Collection Area</span>
+                    <div id="opts-7"></div>
+                </div>
+            </div>
+
+            <div class="q-block" id="block-8">
+                <button class="btn-locate" onclick="locate('8', 276)">📍 Locate (4:36)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">8. Information Centre</span>
+                    <div id="opts-8"></div>
+                </div>
+            </div>
+
+            <div class="q-block" id="block-9">
+                <button class="btn-locate" onclick="locate('9', 287)">📍 Locate (4:47)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">9. Prize Draw Box</span>
+                    <div id="opts-9"></div>
+                </div>
+            </div>
+
+            <div class="q-block" id="block-10">
+                <button class="btn-locate" onclick="locate('10', 301)">📍 Locate (5:01)</button>
+                <div class="matching-row">
+                    <span class="matching-q-text">10. Water station</span>
+                    <div id="opts-10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="btn-submit" id="submit-btn" onclick="submitTest()">Submit to View Transcript</button>
+        <div id="result-area">
+            <div class="score-box" id="final-score"></div>
+            <table class="score-table">
+                <thead><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Status</th></tr></thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="transcript-container">
+        <h2>Transcript</h2>
+        <p>Thank you for all volunteering to help us with the Bridge to Brisbane Fun Run. The purpose of this meeting is to give you some information about your duties on race day.</p>
+        <p>Some of you are asking about where you can park on the day. Unfortunately, some of the usual places down by the river, for example, will be out of bounds because we'll need extra space for emergency vehicles. <span id="loc-1">Probably the best option is the Jack Gray sports field in Barker Street</span>, although the closest parking lot is the Metro shopping complex. I would advise you not to park there as they tend to tow away people who aren't customers.</p>
+        <p>At the start line, most of you will be checking that runners have the necessary gear, especially their electronic timing chip. The race number and the identity wristband. Make sure that the number is attached to the front of the running shirt or singlet, not the back. <span id="loc-2">The timing chip, which records the runner's time, needs to be clipped onto one of their shoes</span> and check that they are wearing their wristband.</p>
+        <p>Some of you will be responsible for organizing the starting groups. It's very important that runners start in a particular order. There is a system of color codes. The red group are walkers and people with baby strollers. The purple group are runners and expect to finish in at less than one hour. <span id="loc-3">And the yellow group are our elite athletes. We'd like them to start the race</span> and we'd like the other groups to follow after that with the red group and the strollers at the very back. This is for their own safety.</p>
+        <p>Now we are still short on volunteers for the race day. So if you have any friends or family members who might be interested, please let us know. We probably okay for people to help with the start, but we'll still <span id="loc-4">desperately need volunteers along the race course to distribute water bottles to the runners.</span> A few of you have offered to help with first aid, but the good people of St John's Ambulance have donated their services, so that won't be necessary.</p>
+        <hr style="border-top: 2px dashed #ddd; margin: 30px 0;">
+        <p>Now I'll show you the layout of the race village, which is where the race ends. Can you see the map? If you look at the bottom right hand side, you'll see where the runners enter the village next to the corporate catering section.</p>
+        <p>As you continue along the course, <span id="loc-5">you'll see the stage on the right. That's where the winners will receive their medals.</span></p>
+        <p>Now. Can you all see the finish line near the center after they finish the race? The runners can take one of two paths. It doesn't matter which one to get their <span id="loc-6">finishes t shirts from the t shirt stand at the end of those paths.</span></p>
+        <p>Many of you will be stationed at the end of the race after they finish. The runners will also want their belongings and <span id="loc-7">all bags are kept in the building on Bowen Road. It's quite close to the exit in the top left hand corner of your map.</span></p>
+        <p>Now some of you will have an important role working in the information center. <span id="loc-8">That's the building in the center of the map, not far from the finish line. It's just below it on your map.</span></p>
+        <p>And one other thing. Can you all please remind the runners to enter in the prize draw for the new car? <span id="loc-9">The entry box is between the shade tents and the corporate catering buildings.</span></p>
+        <p>Okay. Let's see now. What else do I need to point out? Ah, yes. The runners are always thirsty and the main <span id="loc-10">water station in the village is just beside the third exit through to Gregory Terrace.</span> Can you see it there to the left of the corporate catering area? So everyone please direct. The race finishes there to get their free bottled water.</p>
+    </div>
+</div>
+
+<script>
+    // --- Render Options for Match Questions ---
+    document.getElementById('opts-5').innerHTML = getOptionsHTML('5', 'F');
+    document.getElementById('opts-6').innerHTML = getOptionsHTML('6', 'A');
+    document.getElementById('opts-7').innerHTML = getOptionsHTML('7', 'B');
+    document.getElementById('opts-8').innerHTML = getOptionsHTML('8', 'H');
+    document.getElementById('opts-9').innerHTML = getOptionsHTML('9', 'G');
+    document.getElementById('opts-10').innerHTML = getOptionsHTML('10', 'I');
+
+    // --- YouTube API Logic ---
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            height: '0',
+            width: '0',
+            videoId: '5pq454MsXCc', // Video ID from your link
+            playerVars: { 'playsinline': 1 },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        // Player ready
+        updateTimer();
+    }
+
+    function onPlayerStateChange(event) {
+        const btn = document.getElementById('play-pause-btn');
+        if (event.data == YT.PlayerState.PLAYING) {
+            btn.innerText = '⏸';
+            updateTimer();
+        } else {
+            btn.innerText = '▶';
+        }
+    }
+
+    function togglePlay() {
+        const state = player.getPlayerState();
+        if (state == YT.PlayerState.PLAYING) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+        }
+    }
+
+    function updateTimer() {
+        setInterval(() => {
+            if(player && player.getCurrentTime) {
+                const current = player.getCurrentTime();
+                const duration = player.getDuration();
+                document.getElementById('current-time').innerText = formatTime(current);
+                document.getElementById('duration').innerText = formatTime(duration);
+            }
+        }, 1000);
+    }
+
+    function formatTime(seconds) {
+        if(!seconds) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // --- Logic Locate & Submit ---
+    function locate(id, seconds) {
+        // 1. Audio Sync
+        if(player && player.seekTo) {
+            player.seekTo(seconds, true);
+            player.playVideo();
+        }
+
+        // 2. Scroll & Highlight
+        document.querySelectorAll('.highlight-active').forEach(e => e.classList.remove('highlight-active'));
+        const target = document.getElementById('loc-' + id);
+        if (target) {
+            target.classList.add('highlight-active');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function submitTest() {
+        let score = 0;
+        let tableHTML = "";
+        
+        function processQuestion(qId, type) {
+            const inputs = document.getElementsByName(qId);
+            let userSelected = "";
+            let correctAnswer = "";
+            let isCorrect = false;
+
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                
+                if (input.dataset.correct === "true") {
+                    correctAnswer = input.value;
+                    if(type === 'matching') label.classList.add('match-btn-correct');
+                    else label.classList.add('opt-correct');
+                }
+
+                if (input.checked) {
+                    userSelected = input.value;
+                    if (input.dataset.correct !== "true") {
+                        if(type === 'matching') label.classList.add('match-btn-wrong');
+                        else label.classList.add('opt-wrong');
+                    }
+                }
+                input.disabled = true;
+            });
+
+            isCorrect = (userSelected === correctAnswer);
+            if(isCorrect) score++;
+
+            tableHTML += `<tr><td>${qId.replace('q','')}</td><td>${userSelected || '-'}</td><td>${correctAnswer}</td><td>${isCorrect ? '✅' : '❌'}</td></tr>`;
+        }
+
+        for(let i=1; i<=4; i++) processQuestion('q'+i, 'radio');
+        for(let i=5; i<=10; i++) processQuestion('q'+i, 'matching');
+
+        document.getElementById('final-score').innerText = `Your Score: ${score} / 10`;
+        document.getElementById('table-body').innerHTML = tableHTML;
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('transcript-container').style.display = 'block';
+        
+        document.querySelectorAll('.btn-locate').forEach(btn => btn.style.display = 'block');
+        document.getElementById('submit-btn').style.display = 'none';
+
+        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
 </body>
 </html>
