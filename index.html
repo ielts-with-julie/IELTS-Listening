@@ -69,8 +69,14 @@
         .instruction { font-style: italic; color: #555; margin-bottom: 15px; }
         
         /* Map Image */
-        .map-container { text-align: center; margin-bottom: 20px; }
-        .map-container img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; }
+    .map-container img { 
+            max-width: 100%; 
+            height: auto; 
+            border: 2px solid #ddd; 
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Thêm đổ bóng cho chuyên nghiệp */
+        }}
 
         /* Multiple Choice / Matching Block */
         .q-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; position: relative; }
@@ -119,42 +125,6 @@
         table.score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
         table.score-table th, table.score-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         table.score-table th { background-color: var(--primary); color: white; }
-
-        /* CSS MỚI CHO THANH PLAYER */
-        .custom-player-controls {
-            display: flex; align-items: center; justify-content: space-between; gap: 10px;
-            background: #f1f3f4; padding: 10px 20px; border-radius: 50px;
-            max-width: 600px; /* Tăng chiều rộng để thanh kéo dài ra */
-            margin: 0 auto 10px auto;
-        }
-
-        .play-btn {
-            width: 40px; height: 40px; border-radius: 50%; border: none;
-            background: var(--primary); color: white; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; flex-shrink: 0; /* Không bị co lại */
-        }
-        
-        .time-text {
-            font-family: monospace; font-weight: bold; color: #555; font-size: 0.9rem;
-            min-width: 40px; text-align: center;
-        }
-
-        /* Style cho thanh kéo (Input Range) */
-        #seek-bar {
-            flex-grow: 1; /* Chiếm hết khoảng trống còn lại */
-            cursor: pointer;
-            height: 5px; -webkit-appearance: none; background: #ccc; border-radius: 5px;
-        }
-        #seek-bar::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
-            background: var(--primary); cursor: pointer; border: 2px solid white; box-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
-        
-        /* Thu nhỏ video backup lại cho đỡ vướng mắt */
-        .youtube-backup {
-            opacity: 0.8; transform: scale(0.9); margin-top: 5px;
-        }
     </style>
 </head>
 <body>
@@ -163,15 +133,15 @@
     <h1>Basement of Museum</h1>
     <p style="text-align: center; color: #666;">IELTS Listening Actual Test</p>
 
-<div class="audio-section">
+    <div class="audio-section">
         <div class="custom-player-controls">
             <button class="play-btn" id="play-pause-btn" onclick="togglePlay()">▶</button>
-            <span id="current-time" class="time-text">0:00</span>
-            <input type="range" id="seek-bar" value="0" min="0" step="1" oninput="seekAudio(this.value)">
-            <span id="duration" class="time-text">0:00</span>
+            <div class="time-display">
+                <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            </div>
         </div>
-        
         <div class="youtube-backup">
+            <div><strong>Audio Source:</strong> (Nếu nút Play không chạy, hãy bấm vào video bên dưới 👇)</div>
             <div id="youtube-player"></div>
         </div>
     </div>
@@ -207,118 +177,231 @@
         </script>
 
         <div class="q-block" id="block-1">
+
             <button class="btn-locate" onclick="locate('1', 18)">📍 Locate (0:18)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">1. 20th- and 21st-century paintings</span>
+
                 <div id="opts-1"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-2">
+
             <button class="btn-locate" onclick="locate('2', 36)">📍 Locate (0:36)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">2. 19th-century paintings</span>
+
                 <div id="opts-2"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-3">
+
             <button class="btn-locate" onclick="locate('3', 49)">📍 Locate (0:49)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">3. Sculptures</span>
+
                 <div id="opts-3"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-4">
+
             <button class="btn-locate" onclick="locate('4', 62)">📍 Locate (1:02)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">4. ‘Around the world’ exhibition</span>
+
                 <div id="opts-4"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-5">
+
             <button class="btn-locate" onclick="locate('5', 83)">📍 Locate (1:23)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">5. Coins</span>
+
                 <div id="opts-5"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-6">
+
             <button class="btn-locate" onclick="locate('6', 105)">📍 Locate (1:45)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">6. Porcelain and glass</span>
+
                 <div id="opts-6"></div>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="section">
+
         <h3>Questions 7-10</h3>
+
         <p class="instruction">Label the plan below. Write the correct letter, A-H, next to questions 7-10.</p>
+
         
+
         <div class="map-container">
+
             <img src="map.png" alt="Basement of Museum Map">
+
             <p style="font-size: 0.8rem; color: #888;">(Basement Layout: Stairs at bottom, Sitting area in center)</p>
+
         </div>
+
+
 
         <script>
+
             function getAHOptions(qId, correctVal) {
+
                 let html = `<div class="matching-options">`;
+
                 const options = ['A','B','C','D','E','F','G','H'];
+
                 options.forEach(opt => {
+
                     const isCorrect = (opt === correctVal) ? 'data-correct="true"' : '';
+
                     html += `<label class="m-lbl"><input type="radio" name="q${qId}" value="${opt}" ${isCorrect}><span>${opt}</span></label>`;
+
                 });
+
                 html += `</div>`;
+
                 return html;
+
             }
+
         </script>
 
+
+
         <div class="q-block" id="block-7">
+
             <button class="btn-locate" onclick="locate('7', 142)">📍 Locate (2:22)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">7. Restaurant</span>
+
                 <div id="opts-7"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-8">
+
             <button class="btn-locate" onclick="locate('8', 162)">📍 Locate (2:42)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">8. Café</span>
+
                 <div id="opts-8"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-9">
+
             <button class="btn-locate" onclick="locate('9', 180)">📍 Locate (3:00)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">9. Baby-changing facilities</span>
+
                 <div id="opts-9"></div>
+
             </div>
+
         </div>
+
+
 
         <div class="q-block" id="block-10">
+
             <button class="btn-locate" onclick="locate('10', 195)">📍 Locate (3:15)</button>
+
             <div class="matching-row">
+
                 <span class="matching-q-text">10. Cloakroom</span>
+
                 <div id="opts-10"></div>
+
             </div>
+
         </div>
+
     </div>
 
+
+
     <div class="footer">
+
         <button class="btn-submit" id="submit-btn" onclick="submitTest()">Submit to View Transcript</button>
+
         <div id="result-area">
+
             <div class="score-box" id="final-score"></div>
+
             <table class="score-table">
+
                 <thead><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Status</th></tr></thead>
+
                 <tbody id="table-body"></tbody>
+
             </table>
+
         </div>
+
     </div>
 
     <div id="transcript-container">
@@ -379,32 +462,16 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     function onPlayerReady(event) {
-        // Hàm cập nhật thời gian chạy tự động (Replace hàm cũ)
-    function updateTimer() {
-        setInterval(() => {
-            if(player && player.getCurrentTime) {
-                const current = player.getCurrentTime();
-                const duration = player.getDuration();
-                
-                // Cập nhật số hiển thị
-                document.getElementById('current-time').innerText = formatTime(current);
-                document.getElementById('duration').innerText = formatTime(duration);
-                
-                // Cập nhật vị trí thanh trượt tự động theo nhạc
-                const seekBar = document.getElementById('seek-bar');
-                if (document.activeElement !== seekBar) { // Chỉ cập nhật khi người dùng KHÔNG đang kéo
-                    seekBar.max = duration;
-                    seekBar.value = current;
-                }
-            }
-        }, 500); // Cập nhật nhanh hơn (0.5s) cho mượt
+        updateTimer();
     }
 
-    // Hàm xử lý khi người dùng kéo thanh trượt (Thêm mới)
-    function seekAudio(seconds) {
-        if(player && player.seekTo) {
-            player.seekTo(seconds, true);
-            player.playVideo(); // Đảm bảo khi kéo xong nó chạy tiếp
+    function onPlayerStateChange(event) {
+        const btn = document.getElementById('play-pause-btn');
+        if (event.data == YT.PlayerState.PLAYING) {
+            btn.innerText = '⏸';
+            updateTimer();
+        } else {
+            btn.innerText = '▶';
         }
     }
 
@@ -501,5 +568,3 @@
 
 </body>
 </html>
-
-
