@@ -92,9 +92,9 @@
             <div class="options-grid">
                 <label class="option-item"><input type="checkbox" name="q21" value="A"> A. The results were what he had predicted.</label>
                 <label class="option-item"><input type="checkbox" name="q21" value="B"> B. The experiment was simple to set up.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="C"> C. A large sample of people was tested.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="C" data-correct="true"> C. A large sample of people was tested.</label>
                 <label class="option-item"><input type="checkbox" name="q21" value="D" data-correct="true"> D. The subjects were unaware of what they were drinking.</label>
-                <label class="option-item"><input type="checkbox" name="q21" value="E" data-correct="true"> E. The test was repeated several times for each person.</label>
+                <label class="option-item"><input type="checkbox" name="q21" value="E"> E. The test was repeated several times for each person.</label>
             </div>
         </div>
     </div>
@@ -132,8 +132,8 @@
             <button class="btn-locate" onclick="locate('26', 222)">📍 Locate</button>
             <span class="q-text">26. The students agree that food manufacturers deliberately</span>
             <div class="options-grid">
-                <label class="option-item"><input type="radio" name="q26" value="A"> A. make calorie counts hard to understand.</label>
-                <label class="option-item"><input type="radio" name="q26" value="B" data-correct="true"> B. fail to provide accurate calorie counts.</label>
+                <label class="option-item"><input type="radio" name="q26" value="A" data-correct="true"> A. make calorie counts hard to understand.</label>
+                <label class="option-item"><input type="radio" name="q26" value="B"> B. fail to provide accurate calorie counts.</label>
                 <label class="option-item"><input type="radio" name="q26" value="C"> C. use ineffective methods to reduce calories.</label>
             </div>
         </div>
@@ -195,23 +195,44 @@
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    </tbody>
+                </tbody>
             </table>
         </div>
     </div>
 
     <div id="transcript-container">
         <h2 style="color: var(--secondary);">Transcript</h2>
-        <p><span class="speaker">ADAM:</span> Rosie, I've been thinking about our presentation on nutrition and obesity...</p>
-        <p><span class="speaker">ROSIE:</span> Me too. What about your experiment on artificial sweeteners?</p>
-        <p><span class="speaker">ADAM:</span> <span id="loc-21_22">It went well. I used a blind test - the subjects didn't know which drink had the sweetener and which had sugar. And I made sure they each did the test three times to ensure the results were consistent.</span></p>
-        <p><span class="speaker">ROSIE:</span> My nut experiment was harder. <span id="loc-23_24">I think the main problem was I didn't grind them into a fine enough powder, so the chemical didn't extract all the fat. And also, the scales I was using were only accurate to the nearest gram - I needed something much more precise.</span></p>
-        <p><span class="speaker">ADAM:</span> Interesting. I read a study about restaurant menus. <span id="loc-25">It suggested that if you put the healthiest, low-calorie options at the very beginning of the menu, people are much more likely to choose them. It's all about how you organise the information.</span></p>
-        <p><span class="speaker">ROSIE:</span> True. But food labels are a nightmare. <span id="loc-26">We agreed that manufacturers often make it nearly impossible to calculate the actual calorie count, like giving figures for 100g when the pack is 145g.</span></p>
-        <p><span class="speaker">ROSIE:</span> And exercise! <span id="loc-27">Studies show that most people in England claim they are active, but they significantly overestimate the amount of exercise they actually do.</span></p>
-        <p><span class="speaker">ADAM:</span> <span id="loc-28">It's like that train station design where they made the stairs wider and more central than the escalator. It naturally nudged people to take the stairs without even thinking about it. Simple physical changes like that can really change behaviour.</span></p>
-        <p><span class="speaker">ROSIE:</span> Should we include that? <span class="speaker">ADAM:</span> <span id="loc-29">I'm not sure. Let's ask our tutor Dr. Green what she thinks.</span></p>
-        <p><span class="speaker">ROSIE:</span> Okay. What's next? <span class="speaker">ADAM:</span> <span id="loc-30">Well, before we do anything else, we really need to sit down and map out exactly what's going in and the overall structure. We need a clear plan.</span></p>
+        
+        <p><span class="speaker">ADAM:</span> OK Rosie, shall we try to get some ideas together for our presentation on diet and obesity?</p>
+        <p><span class="speaker">ROSIE:</span> Sure.</p>
+        <p><span class="speaker">ADAM:</span> I can talk about the experiment I did to see if people can tell the difference between real sugar and artificial sweeteners.</p>
+        <p><span class="speaker">ROSIE:</span> Where you have people drinks with either sugar or artificial sweeteners and they had to say which they thought it was?</p>
+        <p><span class="speaker">ADAM:</span> Yeah. It took me ages to decide exactly how I’d organise it, <span id="loc-21_22">especially how I could make sure that people didn’t know which drink I was giving them. It was hard to keep track of it all, especially as I had so many people doing it</span> – I had to make sure I kept a proper record of what each person had had.</p>
+        <p><span class="speaker">ROSIE:</span> So could most people tell the difference?</p>
+        <p><span class="speaker">ADAM:</span> Yeah – I hadn’t thought they would be able to, but most people could.</p>
+        <p><span class="speaker">ROSIE:</span> Then there’s that experiment I did measuring the fat content of nuts, to see if the nutritional information given on the packet was accurate.</p>
+        <p><span class="speaker">ADAM:</span> The one where you ground up the nuts and mixed them with a chemical to absorb the fat?</p>
+        <p><span class="speaker">ROSIE:</span> Yes. My results were a bit problematic – the fat content for that type of nut seemed much lower than it said on the package. But I reckon the package information was right. <span id="loc-23_24">I think I should probably have ground up the nuts more than I did. It’s possible that the scales for weighing the fat weren’t accurate enough</span>, too. I’d really like to try the experiment again some time.</p>
+        <p>———————-</p>
+        <p><span class="speaker">ADAM:</span> So what can we say about helping people to lose weight? There’s a lot we could say about what restaurants could do to reduce obesity. I read that the items at the start of a menu and the items at the end of a menu are much more likely to be chosen than the items in the middle. So, <span id="loc-25">if you put the low-calorie items at the beginning and end of the menu, people will probably go for the food with fewer calories</span>, without even realising what they’re doing.</p>
+        <p><span class="speaker">ROSIE:</span> I think food manufacturers could do more to encourage healthy eating.</p>
+        <p><span class="speaker">ADAM:</span> How?</p>
+        <p><span class="speaker">ROSIE:</span> Well, <span id="loc-26">when manufacturers put calorie counts of a food on the label, they’re sometimes really confusing and I suspect they do it on purpose.</span> Because food that’s high in calories tastes better, and so they’ll sell more.</p>
+        <p><span class="speaker">ADAM:</span> Yeah, so if you look at the amount of calories in a pizza, they’ll give you the calories per quarter pizza and you think, oh that’s not too bad. But who’s going to eat a quarter pizza?</p>
+        <p><span class="speaker">ROSIE:</span> Exactly.</p>
+        <p><span class="speaker">ADAM:</span> I suppose another approach to this problem is to get people to exercise more.</p>
+        <p><span class="speaker">ROSIE:</span> Right. In England, the current guidelines are for at least 30 minutes of brisk walking, five days a week. Now when you ask them, <span id="loc-27">about 40% of men and 30% of women say they do this, but when you objectively measure the amount of walking they do with motion sensors, you find that only 6% of men and 4% of women do the recommended amount of exercise.</span></p>
+        <p><span class="speaker">ADAM:</span> Mm, so you can see why obesity is growing.</p>
+        <p><span class="speaker">ROSIE:</span> So how can people be encouraged to take more exercise?</p>
+        <p><span class="speaker">ADAM:</span> Well, for example, think of the location of stairs station. If people reach the stairs before they reach the escalator when they’re leaving the station, they’re more likely to take the stairs. And <span id="loc-28">if you increase the width of the stairs, you’ll get more people using them at the same time.</span> It’s an unconscious process and influenced by minor modifications in their environment.</p>
+        <p><span class="speaker">ROSIE:</span> Right. And it might not be a big change, but if it happens every day, it all adds up.</p>
+        <p><span class="speaker">ADAM:</span> Yes. But actually, <span id="loc-29">I’m not sure if we should be talking about exercise in our presentation.</span></p>
+        <p><span class="speaker">ROSIE:</span> Well, we’ve done quite a bit of reading about it.</p>
+        <p><span class="speaker">ADAM:</span> I know, but it’s going to mean we have a very wide focus, and our tutor did say that we need to focus on causes and solutions in terms of nutrition.</p>
+        <p><span class="speaker">ROSIE:</span> I suppose so. And we’ve got plenty of information about that. OK, well that will be simpler.</p>
+        <p><span class="speaker">ADAM:</span> So what shall we do now? We’ve still got half an hour before our next lecture.</p>
+        <p><span class="speaker">ROSIE:</span> <span id="loc-30">Let’s think about what we’re going to include and what will go where.</span> Then we can decide what slides we need.</p>
+        <p><span class="speaker">ADAM:</span> OK, fine.</p>
     </div>
 </div>
 
@@ -241,7 +262,6 @@
             let userSelected = [];
             let isCorrect = false;
             let correctValues = [];
-
             // 1. Identify User Selection & Correct Values
             inputs.forEach(input => {
                 const label = input.parentElement;
@@ -262,7 +282,6 @@
                 
                 input.disabled = true; // Disable input
             });
-
             // 2. Calculate Logic based on Type
             if (type === 'checkbox') {
                 return { user: userSelected, correct: correctValues };
@@ -330,7 +349,6 @@
         processQuestion('q28', 'radio');
         processQuestion('q29', 'radio');
         processQuestion('q30', 'radio');
-
         // --- Finalize UI ---
         document.getElementById('final-score').innerText = `Your Score: ${score} / 10`;
         document.getElementById('table-body').innerHTML = tableHTML;
@@ -339,7 +357,6 @@
         document.getElementById('transcript-container').style.display = 'block';
         document.querySelectorAll('.btn-locate').forEach(btn => btn.style.display = 'block');
         document.getElementById('submit-btn').style.display = 'none';
-
         // Auto scroll to results
         document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
     }
