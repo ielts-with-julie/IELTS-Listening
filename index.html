@@ -1,22 +1,451 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Julie's IELTS Listening | Coming Soon</title>
+    <title>IELTS Listening - Basement of Museum</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background-color: #f4f7f6; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        p { color: #7f8c8d; line-height: 1.6; }
-        .btn { display: inline-block; margin-top: 20px; padding: 10px 25px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; }
+        :root {
+            --primary: #004a99;
+            --secondary: #e67e22;
+            --locate-btn: #9b59b6;
+            --bg-gray: #f4f6f8;
+            --correct-bg: #d1e7dd;
+            --correct-border: #0f5132;
+            --wrong-bg: #f8d7da;
+            --wrong-border: #842029;
+            --highlight: #ffff00;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-gray); margin: 0; padding: 20px; display: flex; justify-content: center; }
+
+        .main-container { max-width: 900px; width: 100%; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+        h1 { color: var(--primary); text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        
+        /* --- AUDIO PLAYER STYLES --- */
+        .audio-section { 
+            position: sticky; top: 0; background: white; padding: 15px; z-index: 100; 
+            border-bottom: 1px solid #ddd; text-align: center; margin-bottom: 30px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .custom-player-controls {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: #f1f3f4; padding: 10px 20px; border-radius: 50px;
+            max-width: 400px; margin: 0 auto 10px auto;
+        }
+
+        .play-btn {
+            width: 45px; height: 45px; border-radius: 50%; border: none;
+            background: var(--primary); color: white; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .play-btn:hover { transform: scale(1.1); background: #003377; }
+
+        .time-display { font-family: monospace; font-size: 1rem; color: #333; font-weight: bold; }
+        
+        /* YouTube Frame - Visible as Backup */
+        .youtube-backup {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #666;
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px dashed #e67e22;
+            display: inline-block;
+        }
+        #youtube-player { 
+            display: block; margin: 5px auto; border-radius: 4px;
+            width: 200px; height: 115px; /* Small size backup */
+        }
+
+        /* --- QUESTION STYLES --- */
+        .section { margin-bottom: 40px; }
+        .section h3 { background: var(--primary); color: white; padding: 10px 15px; border-radius: 6px; }
+        .instruction { font-style: italic; color: #555; margin-bottom: 15px; }
+        
+        /* Map Image */
+        .map-container { text-align: center; margin-bottom: 20px; }
+        .map-container img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; }
+
+        /* Multiple Choice / Matching Block */
+        .q-block { margin-bottom: 25px; padding: 15px; border-radius: 8px; border: 1px solid #eee; transition: 0.3s; position: relative; }
+        
+        /* Matching Box (Comments List) */
+        .matching-box-list { background: #eef4fa; padding: 15px; border-radius: 8px; border: 1px solid #cce0f5; margin-bottom: 20px; }
+        .matching-box-list h4 { margin-top: 0; color: var(--primary); font-size: 1rem; }
+        .matching-items { list-style: none; padding: 0; }
+        .matching-items li { margin-bottom: 5px; font-size: 0.9rem; }
+        .matching-items b { color: var(--primary); margin-right: 5px; }
+
+        /* Row Layout for Questions */
+        .matching-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 5px; }
+        .matching-q-text { font-weight: bold; flex: 1; min-width: 200px; }
+        
+        .matching-options { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        
+        .m-lbl { cursor: pointer; display: inline-block; }
+        .m-lbl input { display: none; }
+        .m-lbl span { 
+            display: flex; width: 30px; height: 30px; align-items: center; justify-content: center; 
+            border: 1px solid #ccc; border-radius: 4px; font-weight: bold; background: #fff; 
+            transition: 0.2s; font-size: 0.8rem; color: #555;
+        }
+        .m-lbl:hover span { background: #eee; border-color: #aaa; }
+        .m-lbl input:checked + span { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Correct/Wrong Feedback */
+        .match-btn-correct span { background-color: var(--correct-bg) !important; border: 2px solid var(--correct-border) !important; color: #0f5132 !important; }
+        .match-btn-wrong span { background-color: var(--wrong-bg) !important; border: 2px solid var(--wrong-border) !important; color: #842029 !important; text-decoration: line-through; }
+
+        /* Locate Button */
+        .btn-locate { display: none; padding: 4px 8px; background: var(--locate-btn); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; position: absolute; top: 10px; right: 10px; font-size: 0.75rem; z-index: 10; }
+        .btn-locate:hover { background: #8e44ad; }
+        
+        /* Transcript */
+        #transcript-container { display: none; margin-top: 40px; padding: 30px; background: #fffcf0; border: 2px dashed #e67e22; border-radius: 12px; line-height: 1.8; color: #333; }
+        #transcript-container p { margin-bottom: 12px; }
+        .highlight-active { background-color: var(--highlight); font-weight: bold; padding: 2px 5px; box-shadow: 0 0 10px var(--highlight); border-bottom: 2px solid red; border-radius: 3px; }
+
+        .footer { text-align: center; padding: 30px; margin-top: 20px;}
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold; }
+        
+        #result-area { display: none; margin-top: 30px; }
+        .score-box { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; text-align: center; }
+        table.score-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.95rem; }
+        table.score-table th, table.score-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        table.score-table th { background-color: var(--primary); color: white; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Chào mừng bạn đến với IELTS with Julie! 🎧</h1>
-        <p>Trang web hiện đang được nâng cấp để mang lại trải nghiệm luyện nghe tốt nhất cho bạn. Quay lại sớm nhé!</p>
-        <a href="https://github.com/ielts-with-julie" class="btn">Theo dõi dự án trên GitHub</a>
+
+<div class="main-container">
+    <h1>Basement of Museum</h1>
+    <p style="text-align: center; color: #666;">IELTS Listening Actual Test</p>
+
+    <div class="audio-section">
+        <div class="custom-player-controls">
+            <button class="play-btn" id="play-pause-btn" onclick="togglePlay()">▶</button>
+            <div class="time-display">
+                <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            </div>
+        </div>
+        <div class="youtube-backup">
+            <div><strong>Audio Source:</strong> (Nếu nút Play không chạy, hãy bấm vào video bên dưới 👇)</div>
+            <div id="youtube-player"></div>
+        </div>
     </div>
+
+    <div class="section">
+        <h3>Questions 1-6</h3>
+        <p class="instruction">What does the speaker say about each of the following collections? Choose SIX answers from the box (A-G).</p>
+        
+        <div class="matching-box-list">
+            <h4>Comments</h4>
+            <ul class="matching-items">
+                <li><b>A.</b> was given by one person</li>
+                <li><b>B.</b> was recently publicised in the media</li>
+                <li><b>C.</b> includes some items given by members of the public</li>
+                <li><b>D.</b> includes some items given by the artists</li>
+                <li><b>E.</b> includes the most popular exhibits in the museum</li>
+                <li><b>F.</b> is the largest of its kind in the country</li>
+                <li><b>G.</b> has had some of its contents relocated</li>
+            </ul>
+        </div>
+
+        <script>
+            function getAGOptions(qId, correctVal) {
+                let html = `<div class="matching-options">`;
+                const options = ['A','B','C','D','E','F','G'];
+                options.forEach(opt => {
+                    const isCorrect = (opt === correctVal) ? 'data-correct="true"' : '';
+                    html += `<label class="m-lbl"><input type="radio" name="q${qId}" value="${opt}" ${isCorrect}><span>${opt}</span></label>`;
+                });
+                html += `</div>`;
+                return html;
+            }
+        </script>
+
+        <div class="q-block" id="block-1">
+            <button class="btn-locate" onclick="locate('1', 26)">📍 Locate (0:26)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">1. 20th- and 21st-century paintings</span>
+                <div id="opts-1"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-2">
+            <button class="btn-locate" onclick="locate('2', 37)">📍 Locate (0:37)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">2. 19th-century paintings</span>
+                <div id="opts-2"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-3">
+            <button class="btn-locate" onclick="locate('3', 50)">📍 Locate (0:50)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">3. Sculptures</span>
+                <div id="opts-3"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-4">
+            <button class="btn-locate" onclick="locate('4', 62)">📍 Locate (1:02)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">4. ‘Around the world’ exhibition</span>
+                <div id="opts-4"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-5">
+            <button class="btn-locate" onclick="locate('5', 85)">📍 Locate (1:25)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">5. Coins</span>
+                <div id="opts-5"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-6">
+            <button class="btn-locate" onclick="locate('6', 105)">📍 Locate (1:45)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">6. Porcelain and glass</span>
+                <div id="opts-6"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Questions 7-10</h3>
+        <p class="instruction">Label the plan below. Write the correct letter, A-H, next to questions 7-10.</p>
+        
+        <div class="map-container">
+            <img src="https://ielts-thanhloan.com/wp-content/uploads/2020/04/cambridge-ielts-11-test-4-listening-section-2-map.jpg" alt="Basement of Museum Map">
+            <p style="font-size: 0.8rem; color: #888;">(Basement Layout: Stairs at bottom, Sitting area in center)</p>
+        </div>
+
+        <script>
+            function getAHOptions(qId, correctVal) {
+                let html = `<div class="matching-options">`;
+                const options = ['A','B','C','D','E','F','G','H'];
+                options.forEach(opt => {
+                    const isCorrect = (opt === correctVal) ? 'data-correct="true"' : '';
+                    html += `<label class="m-lbl"><input type="radio" name="q${qId}" value="${opt}" ${isCorrect}><span>${opt}</span></label>`;
+                });
+                html += `</div>`;
+                return html;
+            }
+        </script>
+
+        <div class="q-block" id="block-7">
+            <button class="btn-locate" onclick="locate('7', 149)">📍 Locate (2:29)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">7. Restaurant</span>
+                <div id="opts-7"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-8">
+            <button class="btn-locate" onclick="locate('8', 170)">📍 Locate (2:50)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">8. Café</span>
+                <div id="opts-8"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-9">
+            <button class="btn-locate" onclick="locate('9', 188)">📍 Locate (3:08)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">9. Baby-changing facilities</span>
+                <div id="opts-9"></div>
+            </div>
+        </div>
+
+        <div class="q-block" id="block-10">
+            <button class="btn-locate" onclick="locate('10', 201)">📍 Locate (3:21)</button>
+            <div class="matching-row">
+                <span class="matching-q-text">10. Cloakroom</span>
+                <div id="opts-10"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <button class="btn-submit" id="submit-btn" onclick="submitTest()">Submit to View Transcript</button>
+        <div id="result-area">
+            <div class="score-box" id="final-score"></div>
+            <table class="score-table">
+                <thead><tr><th>Q</th><th>Your Answer</th><th>Correct</th><th>Status</th></tr></thead>
+                <tbody id="table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="transcript-container">
+        <h2>Transcript</h2>
+        <p>Good morning, and welcome to the museum - one with a remarkable range of exhibits, which I’m sure you’ll enjoy. My name’s Greg, and I’ll tell you about the various collections as we go round. But before we go, let me just give you a taste of what we have here.</p>
+        <p>Well, for one thing, we have a fine collection of <b>twentieth and twenty-first century paintings</b>, many by very well-known artists. I’m sure you’ll recognise several of the paintings. <span id="loc-1">This is the gallery that attracts the largest number of visitors</span>, so it’s best to go in early in the day before the crowds arrive.</p>
+        <p>Then there are the <b>nineteenth-century paintings</b>. The museum was opened in the middle of that century and <span id="loc-2">several of the artists each donated one work to get the museum started, as it were.</span> So they’re of special interest to us - we feel closer to them than to other works.</p>
+        <p>The <b>sculpture</b> gallery has a number of fine exhibits, but I'm afraid it's currently closed for refurbishment. You’ll need to come back next year to see it properly, but <span id="loc-3">a number of the sculptures have been moved to other parts of the museum.</span></p>
+        <p>‘<b>Around the world</b>' is a temporary exhibition - <span id="loc-4">you've probably seen something about it on TV or in the newspapers.</span> It's created a great deal of interest, because it presents objects from every continent and many countries, and provides information about their social context - why they were made, who for, and so on.</p>
+        <p>Then there’s the collection of <b>coins</b>. This is what you might call a focused, specialist collection, because all the coins come from this country, and were produced between two thousand and a thousand years ago. And <span id="loc-5">many of them were discovered by ordinary people digging their gardens, and donated to the museum!</span></p>
+        <p>All our <b>porcelain and glass</b> was <span id="loc-6">left to the museum by its founder, when he died in 1878. And in the terms of his will, we’re not allowed to add anything to that collection:</span> he believed it was perfect in itself, and we don’t see any reason to disagree!</p>
+        <hr style="border-top: 2px dashed #ddd; margin: 30px 0;">
+        <p>OK, that was something about the collections, and now here's some more practical information, in case you need it. Most of the museum facilities are downstairs, in the <b>basement</b>, so you go down the stairs here. When you reach the bottom of the stairs, you'll find yourself in a sitting area, with comfortable chairs and sofas where you can have a rest before continuing your exploration of the museum.</p>
+        <p>We have a very good <b>restaurant</b>, which serves excellent food all day, in a relaxing atmosphere. To reach it, when you get to the bottom of the stairs, <span id="loc-7">go straight ahead to the far side of the sitting area, then turn right into the corridor. You'll see the door of the restaurant facing you.</span></p>
+        <p>If you just want a snack, or if you'd like to eat somewhere with facilities for children, we also have a <b>café</b>. When you reach the bottom of the stairs, you'll need to <span id="loc-8">go straight ahead, turn right into the corridor, and the café is immediately on the right.</span></p>
+        <p>And talking about children, there are <b>baby-changing facilities</b> downstairs: <span id="loc-9">cross the sitting area, continue straight ahead along the corridor on the left, and you and your baby will find the facilities on the left-hand side.</span></p>
+        <p>The <b>cloakroom</b>, where you should leave coats, umbrellas and any large bags, is <span id="loc-10">on the left hand side of the sitting area. It's through the last door before you come to the corridor.</span> There are toilets on every floor, but in the basement they're the first rooms on the left when you get down there.</p>
+        <p>OK, now if you’ve got anything to leave in the cloakroom, please do that now, and then we’ll start our tour.</p>
+    </div>
+</div>
+
+<script>
+    // --- Render Options ---
+    // Q1-6 Use A-G
+    document.getElementById('opts-1').innerHTML = getAGOptions('1', 'E');
+    document.getElementById('opts-2').innerHTML = getAGOptions('2', 'D');
+    document.getElementById('opts-3').innerHTML = getAGOptions('3', 'G');
+    document.getElementById('opts-4').innerHTML = getAGOptions('4', 'B');
+    document.getElementById('opts-5').innerHTML = getAGOptions('5', 'C');
+    document.getElementById('opts-6').innerHTML = getAGOptions('6', 'A');
+
+    // Q7-10 Use A-H
+    document.getElementById('opts-7').innerHTML = getAHOptions('7', 'F');
+    document.getElementById('opts-8').innerHTML = getAHOptions('8', 'H');
+    document.getElementById('opts-9').innerHTML = getAHOptions('9', 'C');
+    document.getElementById('opts-10').innerHTML = getAHOptions('10', 'B');
+
+    // --- YouTube API Logic ---
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-player', {
+            videoId: 'VP3-VPJzQoQ', // Updated Video ID
+            playerVars: { 
+                'playsinline': 1,
+                'origin': window.location.origin
+            },
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    // Load API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onPlayerReady(event) {
+        updateTimer();
+    }
+
+    function onPlayerStateChange(event) {
+        const btn = document.getElementById('play-pause-btn');
+        if (event.data == YT.PlayerState.PLAYING) {
+            btn.innerText = '⏸';
+            updateTimer();
+        } else {
+            btn.innerText = '▶';
+        }
+    }
+
+    function togglePlay() {
+        if(!player) return;
+        const state = player.getPlayerState();
+        if (state == YT.PlayerState.PLAYING) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+        }
+    }
+
+    function updateTimer() {
+        setInterval(() => {
+            if(player && player.getCurrentTime) {
+                const current = player.getCurrentTime();
+                const duration = player.getDuration();
+                document.getElementById('current-time').innerText = formatTime(current);
+                document.getElementById('duration').innerText = formatTime(duration);
+            }
+        }, 1000);
+    }
+
+    function formatTime(seconds) {
+        if(!seconds) return "0:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function locate(id, seconds) {
+        if(player && player.seekTo) {
+            player.seekTo(seconds, true);
+            player.playVideo();
+        } else {
+            alert("Player is loading... please wait or click Play on the video frame.");
+        }
+
+        document.querySelectorAll('.highlight-active').forEach(e => e.classList.remove('highlight-active'));
+        const target = document.getElementById('loc-' + id);
+        if (target) {
+            target.classList.add('highlight-active');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function submitTest() {
+        let score = 0;
+        let tableHTML = "";
+        
+        function processQuestion(qId, type) {
+            const inputs = document.getElementsByName(qId);
+            let userSelected = "";
+            let correctAnswer = "";
+            let isCorrect = false;
+
+            inputs.forEach(input => {
+                const label = input.parentElement;
+                
+                if (input.dataset.correct === "true") {
+                    correctAnswer = input.value;
+                    label.classList.add('match-btn-correct');
+                }
+
+                if (input.checked) {
+                    userSelected = input.value;
+                    if (input.dataset.correct !== "true") {
+                        label.classList.add('match-btn-wrong');
+                    }
+                }
+                input.disabled = true;
+            });
+
+            isCorrect = (userSelected === correctAnswer);
+            if(isCorrect) score++;
+
+            tableHTML += `<tr><td>${qId.replace('q','')}</td><td>${userSelected || '-'}</td><td>${correctAnswer}</td><td>${isCorrect ? '✅' : '❌'}</td></tr>`;
+        }
+
+        for(let i=1; i<=10; i++) processQuestion('q'+i, 'matching');
+
+        document.getElementById('final-score').innerText = `Your Score: ${score} / 10`;
+        document.getElementById('table-body').innerHTML = tableHTML;
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('transcript-container').style.display = 'block';
+        
+        document.querySelectorAll('.btn-locate').forEach(btn => btn.style.display = 'block');
+        document.getElementById('submit-btn').style.display = 'none';
+
+        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
 </body>
 </html>
