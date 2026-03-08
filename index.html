@@ -1,22 +1,222 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Julie's IELTS Listening | Coming Soon</title>
+    <title>IELTS Listening - Accommodation Agency Form</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background-color: #f4f7f6; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        p { color: #7f8c8d; line-height: 1.6; }
-        .btn { display: inline-block; margin-top: 20px; padding: 10px 25px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; }
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --bg: #f5f7fa;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
+
+        .main-container { max-width: 800px; width: 100%; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        h1 { color: var(--primary); text-align: center; margin-bottom: 5px; }
+        .sub-title { text-align: center; color: #666; font-style: italic; margin-bottom: 30px; }
+
+        /* --- AUDIO PLAYER --- */
+        .audio-section {
+            position: sticky; top: 10px; z-index: 1000;
+            background: white; border: 1px solid #ddd; padding: 15px;
+            border-radius: 50px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 40px;
+        }
+        .play-btn {
+            width: 45px; height: 45px; border-radius: 50%; border: none;
+            background: var(--accent); color: white; cursor: pointer; font-size: 1.2rem;
+        }
+        #seek-bar { flex-grow: 1; cursor: pointer; accent-color: var(--accent); }
+        .time-display { font-family: monospace; font-weight: bold; min-width: 45px; }
+
+        /* --- FORM STYLES --- */
+        .form-box {
+            border: 2px solid var(--primary); padding: 30px; border-radius: 8px;
+            background-color: #fff; position: relative;
+        }
+        .form-header {
+            text-align: center; border-bottom: 2px solid var(--primary);
+            margin-bottom: 25px; padding-bottom: 10px;
+        }
+        .form-header h2 { margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+
+        .form-row { margin-bottom: 18px; line-height: 1.6; font-size: 1.1rem; }
+        input[type="text"] {
+            border: none; border-bottom: 1px dashed #333; outline: none;
+            padding: 2px 8px; font-size: 1rem; color: var(--accent); font-weight: bold;
+            width: 180px; transition: 0.3s;
+        }
+        input[type="text"]:focus { border-bottom-style: solid; background: #f0f8ff; }
+        
+        /* Feedback states */
+        .correct-input { border-bottom: 2px solid var(--success) !important; color: var(--success) !important; }
+        .wrong-input { border-bottom: 2px solid var(--error) !important; color: var(--error) !important; text-decoration: line-through; }
+        .ans-reveal { color: var(--success); font-weight: bold; font-size: 0.9rem; margin-left: 5px; }
+
+        /* --- TRANSCRIPT --- */
+        #transcript-container { display: none; margin-top: 40px; padding: 20px; background: #fafafa; border-radius: 10px; line-height: 1.8; }
+        .locate-btn {
+            background: #9b59b6; color: white; border: none; padding: 3px 8px;
+            border-radius: 4px; cursor: pointer; font-size: 0.7rem; margin-right: 5px;
+            display: none;
+        }
+        .highlight { background: yellow; font-weight: bold; border-radius: 3px; }
+
+        .btn-submit {
+            display: block; width: 100%; padding: 15px; margin-top: 30px;
+            background: var(--primary); color: white; border: none;
+            border-radius: 8px; font-size: 1.2rem; cursor: pointer; font-weight: bold;
+        }
+        .score-display { text-align: center; font-size: 1.5rem; margin-top: 20px; font-weight: bold; color: var(--accent); display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Chào mừng bạn đến với IELTS with Julie! 🎧</h1>
-        <p>Trang web hiện đang được nâng cấp để mang lại trải nghiệm luyện nghe tốt nhất cho bạn. Quay lại sớm nhé!</p>
-        <a href="https://github.com/ielts-with-julie" class="btn">Theo dõi dự án trên GitHub</a>
+
+<div class="main-container">
+    <h1>Accommodation Agency</h1>
+    <p class="sub-title">Complete the form. Write NO MORE THAN TWO WORDS AND/OR A NUMBER for each answer.</p>
+
+    <div class="audio-section">
+        <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+        <span class="time-display" id="curr-time">0:00</span>
+        <input type="range" id="seek-bar" value="0" min="0" oninput="seekAudio(this.value)">
+        <span class="time-display" id="dur-time">0:00</span>
+        <audio id="main-audio" src="Complete 1 - U1.mp3"></audio>
     </div>
+
+    <div class="form-box">
+        <div class="form-header">
+            <h2>Good Moves Accommodation Agency</h2>
+        </div>
+        
+        <div class="form-row"><b>Call taken by:</b> Ben</div>
+        <div class="form-row"><b>Name:</b> 1. <input type="text" id="q1" data-ans="Clarice Willard"></div>
+        <div class="form-row"><b>Telephone:</b> 2. <input type="text" id="q2" data-ans="0192 8734566"></div>
+        <div class="form-row"><b>Heard about us from:</b> 3. <input type="text" id="q3" data-ans="family member"></div>
+        
+        <div class="form-row"><b>Type of accommodation preferred:</b> <br>
+            4. <input type="text" id="q4" data-ans="apartment|flat"></div>
+        
+        <div class="form-row"><b>Number of people:</b> 5. <input type="text" id="q5" data-ans="two|2"></div>
+        
+        <div class="form-row"><b>Preferred location:</b> Wants to be close to <br>
+            6. <input type="text" id="q6" data-ans="town centre"></div>
+        
+        <div class="form-row"><b>Price:</b> maximum 7. £ <input type="text" id="q7" data-ans="350"> per person (including 8. <input type="text" id="q8" data-ans="bills">)</div>
+        
+        <div class="form-row"><b>Additional notes:</b> <br>
+            I suggested Flat 3 at 9. <input type="text" id="q9" data-ans="Thorney Leys"> Road in Bampton.</div>
+        
+        <div class="form-row"><b>I will send further details to customer by:</b> <br>
+            10. <input type="text" id="q10" data-ans="email"></div>
+    </div>
+
+    <button class="btn-submit" id="submit-btn" onclick="checkAnswers()">Submit & View Transcript</button>
+    <div class="score-display" id="score-text"></div>
+
+    <div id="transcript-container">
+        <h3>Transcript</h3>
+        <p><b>Ben:</b> ... Can I take your details before we get started?</p>
+        <p><b>Woman:</b> Sure. My name is <button class="locate-btn" onclick="jumpTo(31)">Locate</button> <span id="loc-1">Clarice Willard</span>. Willard is W-I-L-L-A-R-D.</p>
+        <p><b>Ben:</b> And have you got a contact number?</p>
+        <p><b>Woman:</b> Yes, it's <button class="locate-btn" onclick="jumpTo(45)">Locate</button> <span id="loc-2">0192 8734566</span>.</p>
+        <p><b>Ben:</b> ... How you found us?</p>
+        <p><b>Woman:</b> A <button class="locate-btn" onclick="jumpTo(62)">Locate</button> <span id="loc-3">family member</span> used you last year and recommended you.</p>
+        <p><b>Ben:</b> Which property are you interested in?</p>
+        <p><b>Woman:</b> I think an <button class="locate-btn" onclick="jumpTo(100)">Locate</button> <span id="loc-4">apartment</span> is all we can afford. There's <button class="locate-btn" onclick="jumpTo(105)">Locate</button> <span id="loc-5">two</span> of us.</p>
+        <p><b>Ben:</b> Any preferences in terms of location?</p>
+        <p><b>Woman:</b> Both our jobs are in the <button class="locate-btn" onclick="jumpTo(126)">Locate</button> <span id="loc-6">town centre</span>.</p>
+        <p><b>Ben:</b> And what's your budget? ...</p>
+        <p><b>Woman:</b> We wouldn't be able to pay more than <button class="locate-btn" onclick="jumpTo(165)">Locate</button> <span id="loc-7">350</span> each. And that would have to include <button class="locate-btn" onclick="jumpTo(172)">Locate</button> <span id="loc-8">bills</span>.</p>
+        <p><b>Ben:</b> The apartment number is 3, and it’s at 57 <button class="locate-btn" onclick="jumpTo(210)">Locate</button> <span id="loc-9">Thorney Leys</span> Road.</p>
+        <p><b>Ben:</b> ... Do you have an email address? In that case, I can send you the details by <button class="locate-btn" onclick="jumpTo(230)">Locate</button> <span id="loc-10">email</span>.</p>
+    </div>
+</div>
+
+<script>
+    const audio = document.getElementById('main-audio');
+    const playBtn = document.getElementById('play-btn');
+    const seekBar = document.getElementById('seek-bar');
+    const currTime = document.getElementById('curr-time');
+    const durTime = document.getElementById('dur-time');
+
+    // AUDIO LOGIC
+    function togglePlay() {
+        if (audio.paused) { audio.play(); playBtn.innerText = '⏸'; }
+        else { audio.pause(); playBtn.innerText = '▶'; }
+    }
+
+    audio.addEventListener('timeupdate', () => {
+        const val = (audio.currentTime / audio.duration) * 100;
+        if (!seekBar.dragging) {
+            seekBar.value = audio.currentTime;
+            currTime.innerText = formatTime(audio.currentTime);
+        }
+    });
+
+    audio.onloadedmetadata = () => {
+        seekBar.max = audio.duration;
+        durTime.innerText = formatTime(audio.duration);
+    };
+
+    function seekAudio(val) {
+        audio.currentTime = val;
+    }
+
+    function formatTime(sec) {
+        let m = Math.floor(sec / 60);
+        let s = Math.floor(sec % 60);
+        return m + ":" + (s < 10 ? '0' : '') + s;
+    }
+
+    function jumpTo(sec) {
+        audio.currentTime = sec;
+        audio.play();
+        playBtn.innerText = '⏸';
+        
+        // Highlight in transcript
+        document.querySelectorAll('.highlight').forEach(e => e.classList.remove('highlight'));
+        const active = document.querySelector(`.locate-btn[onclick="jumpTo(${sec})"]`).nextElementSibling;
+        active.classList.add('highlight');
+        active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // TEST LOGIC
+    function checkAnswers() {
+        let score = 0;
+        for (let i = 1; i <= 10; i++) {
+            const input = document.getElementById('q'+i);
+            const userAns = input.value.trim().toLowerCase();
+		const correctAnsList = input.dataset.ans.toLowerCase().split('|');
+		let isCorrect = correctAnsList.includes(userAns);
+
+            // Simple check (Can be improved with regex for flexible spacing)
+            if (userAns === correctAns) {
+                input.classList.add('correct-input');
+                score++;
+            } else {
+                input.classList.add('wrong-input');
+                const reveal = document.createElement('span');
+                reveal.className = 'ans-reveal';
+                reveal.innerText = ` (${input.dataset.ans})`;
+                input.parentNode.appendChild(reveal);
+            }
+            input.disabled = true;
+        }
+
+        document.getElementById('score-text').innerText = `Your Score: ${score} / 10`;
+        document.getElementById('score-text').style.display = 'block';
+        document.getElementById('transcript-container').style.display = 'block';
+        document.getElementById('submit-btn').style.display = 'none';
+        document.querySelectorAll('.locate-btn').forEach(b => b.style.display = 'inline-block');
+    }
+</script>
+
 </body>
 </html>
