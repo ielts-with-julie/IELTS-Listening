@@ -104,7 +104,7 @@
         
         <div class="form-row"><b>Number of people:</b> 5. <input type="text" id="q5" data-ans="two|2"></div>
         
-        <div class="form-row"><b>Preferred location:</b> Wants to be close to 6. <input type="text" id="q6" data-ans="town centre"></div>
+        <div class="form-row"><b>Preferred location:</b> Wants to be close to 6. <input type="text" id="q6" data-ans="town centre|town centre"></div>
         
         <div class="form-row"><b>Price:</b> maximum 7. £ <input type="text" id="q7" data-ans="350"> per person<br> 
 			(including 8. <input type="text" id="q8" data-ans="bills">)</div>
@@ -186,37 +186,44 @@
     }
 
     // TEST LOGIC
-    function checkAnswers() {
-        let score = 0;
-        for (let i = 1; i <= 10; i++) {
-            const input = document.getElementById('q'+i);
-            const userAns = input.value.trim().toLowerCase();
-		const correctAnsList = input.dataset.ans.toLowerCase().split('|');
-		let isCorrect = correctAnsList.includes(userAns);
+function checkAnswers() {
+    let score = 0;
 
-            // Simple check (Can be improved with regex for flexible spacing)
-            if (userAns === correctAns) {
-                input.classList.add('correct-input');
-                score++;
-            } else {
-                input.classList.add('wrong-input');
-                const reveal = document.createElement('span');
-                reveal.className = 'ans-reveal';
-                reveal.innerText = ` (${input.dataset.ans})`;
-                input.parentNode.appendChild(reveal);
-            }
-            input.disabled = true;
+    for (let i = 1; i <= 10; i++) {
+        const input = document.getElementById('q' + i);
+        const userAns = input.value.trim().toLowerCase();
+
+        const correctAnsList = input.dataset.ans.toLowerCase().split('|');
+        let isCorrect = correctAnsList.includes(userAns);
+
+        if (isCorrect) {
+            input.classList.add('correct-input');
+            score++;
+        } else {
+            input.classList.add('wrong-input');
+
+            const reveal = document.createElement('span');
+            reveal.className = 'ans-reveal';
+            reveal.innerText = ` (${input.dataset.ans})`;
+            input.parentNode.appendChild(reveal);
         }
 
-        document.getElementById('score-text').innerText = `Your Score: ${score} / 10`;
-        document.getElementById('score-text').style.display = 'block';
-        document.getElementById('transcript-container').style.display = 'block';
-        document.getElementById('submit-btn').style.display = 'none';
-        document.querySelectorAll('.locate-btn').forEach(b => b.style.display = 'inline-block');
+        input.disabled = true;
+    }
+
+    document.getElementById('score-text').innerText = `Your Score: ${score} / 10`;
+    document.getElementById('score-text').style.display = 'block';
+    document.getElementById('transcript-container').style.display = 'block';
+    document.getElementById('submit-btn').style.display = 'none';
+
+    document.querySelectorAll('.locate-btn').forEach(b => 
+        b.style.display = 'inline-block'
+    );
     }
 </script>
 
 </body>
 </html>
+
 
 
