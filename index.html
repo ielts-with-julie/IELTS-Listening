@@ -1,22 +1,329 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Julie's IELTS Listening | Coming Soon</title>
+    <title>IELTS Listening - Time Perspectives</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background-color: #f4f7f6; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        p { color: #7f8c8d; line-height: 1.6; }
-        .btn { display: inline-block; margin-top: 20px; padding: 10px 25px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px; }
+        :root {
+            --blue: #2b6cb0;       
+            --orange: #ed8936;     
+            --peach-bg: #fff0f0;   /* Màu nền hồng đào pastel dịu ngọt */
+            --peach-table: #ffe4e1; /* Màu hồng đào đậm hơn chút cho viền/header bảng */
+            --text-dark: #2d3748;
+            --input-line: #e53e3e; 
+            --correct: #38a169;    
+            --wrong: #e53e3e;      
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--peach-bg); margin: 0; padding: 20px 15px; color: var(--text-dark); }
+        .container { max-width: 900px; margin: 0 auto; width: 100%; }
+
+        h1 { text-align: center; color: var(--blue); font-size: 2.2rem; margin-bottom: 5px; }
+        .instruction { text-align: center; font-weight: bold; color: #c53030; margin-bottom: 25px; font-size: 1.1rem; }
+
+        /* --- AUDIO PLAYER --- */
+        .audio-wrapper {
+            position: sticky; top: 15px; z-index: 100; background: white; border-radius: 50px;
+            padding: 10px 25px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.15); margin-bottom: 30px; border: 1px solid #fee2e2;
+        }
+        .play-btn {
+            width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--blue); 
+            color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.2rem; transition: 0.3s; flex-shrink: 0;
+        }
+        .play-btn:hover { background: var(--orange); transform: scale(1.05); }
+        #seek-bar { flex-grow: 1; accent-color: var(--orange); cursor: pointer; }
+        .time { font-family: monospace; font-size: 0.95rem; color: #4a5568; font-weight: bold; width: 40px; text-align: center; }
+
+        /* --- FORM CARD --- */
+        .form-card {
+            background: white; border-radius: 15px; padding: 35px 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.03); margin-bottom: 30px;
+        }
+
+        /* --- TABLE STYLES --- */
+        .table-responsive { overflow-x: auto; margin-bottom: 40px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { border: 2px solid var(--peach-table); padding: 15px; text-align: left; vertical-align: middle; line-height: 1.6;}
+        th { background-color: var(--peach-table); color: var(--text-dark); font-size: 1.1rem; }
+        td:first-child { font-weight: bold; background-color: #fffafaf0; text-align: center; } /* Cột Time Zone */
+
+        .q-num { font-weight: bold; margin-right: 5px; color: var(--blue); }
+
+        /* TEXT INPUTS */
+        input[type="text"] {
+            border: none; border-bottom: 2px dashed var(--orange); background: transparent;
+            padding: 5px; font-size: 1.05rem; color: var(--blue); font-weight: bold;
+            width: 140px; max-width: 100%; transition: 0.3s; outline: none; text-align: center;
+        }
+        input[type="text"]:focus { border-bottom: 2px solid var(--blue); background-color: var(--peach-bg); }
+        .ans-hint { color: var(--correct); font-weight: bold; font-size: 0.95rem; margin-left: 8px; display: inline-block;}
+        .correct-input { border-bottom-color: var(--correct) !important; color: var(--correct) !important; border-bottom-style: solid !important; }
+        .wrong-input { border-bottom-color: var(--wrong) !important; color: var(--wrong) !important; text-decoration: line-through; border-bottom-style: solid !important; }
+
+        /* --- MCQ STYLES --- */
+        .mcq-section-title { font-size: 1.3rem; border-bottom: 2px solid var(--peach-table); padding-bottom: 10px; margin-bottom: 20px;}
+        .mcq-block { margin-bottom: 25px; padding: 15px; border-radius: 10px; transition: background 0.3s; }
+        .mcq-q { font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; }
+        .mcq-option {
+            display: block; padding: 8px 10px; margin-bottom: 8px; border-radius: 6px;
+            cursor: pointer; transition: background 0.2s; border: 1px solid transparent;
+        }
+        .mcq-option:hover { background: var(--peach-bg); }
+        .mcq-option input { margin-right: 10px; accent-color: var(--orange); transform: scale(1.2); }
+        
+        .correct-mcq { background-color: #f0fff4; border: 1px solid #9ae6b4; }
+        .wrong-mcq { background-color: #fff5f5; border: 1px solid #feb2b2; }
+
+        /* --- BUTTONS & TRANSCRIPT --- */
+        .submit-btn {
+            width: 100%; padding: 18px; background: var(--blue); color: white; border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 10px rgba(43, 108, 176, 0.3);
+        }
+        .submit-btn:hover { background: var(--orange); transform: translateY(-2px); }
+        .score-display { text-align: center; font-size: 2rem; font-weight: bold; margin: 25px 0; color: var(--orange); display: none; }
+
+        #transcript { display: none; margin-top: 40px; padding: 30px; background: white; border-radius: 15px; line-height: 1.8; font-size: 1.05rem; }
+        .locate-btn {
+            background: #f6ad55; color: white; border: none; padding: 4px 12px; border-radius: 20px;
+            cursor: pointer; font-size: 0.8rem; margin-right: 8px; font-weight: bold; transition: 0.2s;
+        }
+        .locate-btn:hover { background: var(--orange); }
+        .highlight { background: #feebc8; border-bottom: 2px solid var(--orange); padding: 2px 4px; font-weight: bold; border-radius: 3px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Chào mừng bạn đến với IELTS with Julie! 🎧</h1>
-        <p>Trang web hiện đang được nâng cấp để mang lại trải nghiệm luyện nghe tốt nhất cho bạn. Quay lại sớm nhé!</p>
-        <a href="https://github.com/ielts-with-julie" class="btn">Theo dõi dự án trên GitHub</a>
+
+<div class="container">
+    <h1>Time Perspectives</h1>
+    <div class="instruction">Write ONE WORD ONLY for each answer.</div>
+
+    <div class="audio-wrapper">
+        <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+        <span class="time" id="curr-time">0:00</span>
+        <input type="range" id="seek-bar" value="0" min="0" oninput="seekAudio(this.value)">
+        <span class="time" id="dur-time">0:00</span>
+        <audio id="main-audio" src="https://ieltssimulator.com/wp-content/uploads/2023/06/1847740292-mp3cut.net_.mp3?_=1"></audio>
     </div>
+
+    <div class="form-card">
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time Zone</th>
+                        <th>Outlook</th>
+                        <th>Features & Consequences</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">Past</td>
+                        <td>Positive</td>
+                        <td>Remember good time, e.g. birthdays. Keep family records, photo albums, etc.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="q-num">31</span> <input type="text" id="q31" data-ans="Negative"></td>
+                        <td>Focus on disappointments, failures, bad decisions.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Present</td>
+                        <td>Hedonistic</td>
+                        <td>Live for <span class="q-num">32</span> <input type="text" id="q32" data-ans="pleasure">; seek sensation; avoid pain.</td>
+                    </tr>
+                    <tr>
+                        <td>Fatalistic</td>
+                        <td>Life is governed by <span class="q-num">33</span> <input type="text" id="q33" data-ans="poverty">, religious beliefs, social conditions. Life’s path can’t be changed.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Future</td>
+                        <td><span class="q-num">34</span> <input type="text" id="q34" data-ans="Active"></td>
+                        <td>Prefer work to play. Don’t give in to temptation.</td>
+                    </tr>
+                    <tr>
+                        <td>Fatalistic</td>
+                        <td>Have a strong belief in life after death and importance of <span class="q-num">35</span> <input type="text" id="q35" data-ans="success"> in life.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mcq-section-title">Questions 36-40 <br><span style="font-size: 1rem; color: #718096; font-weight: normal;">Choose the correct letter, A, B or C.</span></h3>
+        
+        <div class="mcq-block" id="block-36" data-ans="B">
+            <div class="mcq-q">36. We are all present hedonists</div>
+            <label class="mcq-option"><input type="radio" name="q36" value="A"> A. at school.</label>
+            <label class="mcq-option"><input type="radio" name="q36" value="B"> B. at birth.</label>
+            <label class="mcq-option"><input type="radio" name="q36" value="C"> C. while eating and drinking.</label>
+        </div>
+
+        <div class="mcq-block" id="block-37" data-ans="A">
+            <div class="mcq-q">37. American boys drop out of school at a higher rate than girls because</div>
+            <label class="mcq-option"><input type="radio" name="q37" value="A"> A. they need to be in control of the way they learn.</label>
+            <label class="mcq-option"><input type="radio" name="q37" value="B"> B. they play video games instead of doing school work.</label>
+            <label class="mcq-option"><input type="radio" name="q37" value="C"> C. they are not as intelligent as girls.</label>
+        </div>
+
+        <div class="mcq-block" id="block-38" data-ans="C">
+            <div class="mcq-q">38. Present-orientated children</div>
+            <label class="mcq-option"><input type="radio" name="q38" value="A"> A. do not realise present actions can have negative future effects.</label>
+            <label class="mcq-option"><input type="radio" name="q38" value="B"> B. are unable to learn lessons from past mistakes.</label>
+            <label class="mcq-option"><input type="radio" name="q38" value="C"> C. know what could happen if they do something bad, but do it anyway.</label>
+        </div>
+
+        <div class="mcq-block" id="block-39" data-ans="A">
+            <div class="mcq-q">39. If Americans had an extra day per week, they would spend it</div>
+            <label class="mcq-option"><input type="radio" name="q39" value="A"> A. working harder.</label>
+            <label class="mcq-option"><input type="radio" name="q39" value="B"> B. building relationships.</label>
+            <label class="mcq-option"><input type="radio" name="q39" value="C"> C. sharing family meals.</label>
+        </div>
+
+        <div class="mcq-block" id="block-40" data-ans="B">
+            <div class="mcq-q">40. Understanding how people think about time can help us</div>
+            <label class="mcq-option"><input type="radio" name="q40" value="A"> A. become more virtuous.</label>
+            <label class="mcq-option"><input type="radio" name="q40" value="B"> B. work together better.</label>
+            <label class="mcq-option"><input type="radio" name="q40" value="C"> C. identify careless or ambitious people.</label>
+        </div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="checkAnswers()">Check Answers & View Transcript</button>
+    <div class="score-display" id="score-display"></div>
+
+    <div id="transcript">
+        <h3 style="color: var(--blue); border-bottom: 2px solid var(--peach-table); padding-bottom: 10px; margin-top:0;">Full Transcript</h3>
+        <p>Today, I’m going to be talking about time. Specifically, I’ll be looking at how people think about time, and how these time perspectives structure our lives. According to social psychologists, there are six ways of thinking about time, which are called personal time zones.</p>
+        
+        <p>The first two are based in the past. Past positive thinkers spend most of their time in a state of nostalgia, fondly remembering moments such as birthdays, marriages, and important achievements in their life. These are the kinds of people who keep family records, books, and photo albums. People living in the past <button class="locate-btn" onclick="jumpTo(42)">Locate</button> <span id="loc-31">negative</span> time zone are also absorbed by earlier times, but they focus on all the bad things – regrets, failures, and poor decisions. They spend a lot of time thinking about how life could have been.</p>
+        
+        <p>Then, we have people who live in the present. Present hedonists are driven by <button class="locate-btn" onclick="jumpTo(65)">Locate</button> <span id="loc-32">pleasure</span> and immediate sensation. Their life motto is to have a good time and avoid pain. Present fatalists live in the moment too, but they believe this moment is the product of circumstances entirely beyond their control; it’s their fate. Whether it’s <button class="locate-btn" onclick="jumpTo(82)">Locate</button> <span id="loc-33">poverty</span>, religion, or society itself, something stops these people from believing they can play a role in changing their outcomes in life. Life simply “is” and that’s that.</p>
+        
+        <p>Looking at the future time zone, we can see that people classified as future <button class="locate-btn" onclick="jumpTo(105)">Locate</button> <span id="loc-34">active</span> are the planners and go-getters. They work rather than play and resist temptation. Decisions are made based on potential consequences, not on the experience itself. A second future-orientated perspective, future fatalistic, is driven by the certainty of life after death and some kind of a judgement day when they will be assessed on how virtuously they have lived and what <button class="locate-btn" onclick="jumpTo(135)">Locate</button> <span id="loc-35">success</span> they have had in their lives.</p>
+        
+        <p>Okay, let’s move on. You might ask “how do these time zones affect our lives?” Well, let’s start at the beginning. Everyone is <button class="locate-btn" onclick="jumpTo(152)">Locate</button> <span id="loc-36">brought into this world</span> as a present hedonist. No exceptions. Our initial needs and demands – to be warm, secure, fed, and watered – all stem from the present moment. But things change when we enter formal education – we’re taught to stop existing in the moment and to begin thinking about future outcomes.</p>
+        
+        <p>But, did you know that every nine seconds a child in the USA drops out of school? For boys, the rate is much higher than for girls. We could easily say “Ah, well, boys just aren’t as bright as girls” but the evidence doesn’t support this. A recent study states that boys in America, by the age of twenty one, have spent 10,000 hours playing video games. The research suggests that they’ll never fit in the traditional classroom because these boys require a situation where they have the <button class="locate-btn" onclick="jumpTo(215)">Locate</button> <span id="loc-37">ability to manage their own learning environment</span>.</p>
+        
+        <p>Now, let’s look at the way we do prevention education. All prevention education is aimed at a future time zone. We say “don’t smoke or you’ll get cancer”, “get good grades or you won’t get a good job”. But with present-orientated kids that just doesn’t work. Although they understand the potentially negative consequences of their actions, they <button class="locate-btn" onclick="jumpTo(248)">Locate</button> <span id="loc-38">persist with the behaviour</span> because they’re not living for the future; they’re in the moment right now. We can’t use logic and it’s no use reminding them of potential fall-out from their decisions or previous errors of judgment – we’ve got to get in their minds just as they’re about to make a choice.</p>
+        
+        <p>Time perspectives make a big difference in how we value and use our time. When Americans are asked how busy they are, the vast majority report being <button class="locate-btn" onclick="jumpTo(285)">Locate</button> <span id="loc-39">busier than ever before</span>. They admit to sacrificing their relationships, personal time, and a good night’s sleep for their success. Twenty years ago, 60% of Americans had sitdown dinners with their families, and now only 20% do. But when they’re asked what they would do with an eight-day week, they say “Oh that’d be great”. They would spend that time <button class="locate-btn" onclick="jumpTo(315)">Locate</button> <span id="loc-39b">labouring away to achieve more</span>. They’re constantly trying to get ahead, to get toward a future point of happiness.</p>
+        
+        <p>So, it’s really important to be aware of how other people think about time. We tend to think: “Oh, that person’s really irresponsible” or “That guy’s power-hungry” but often what we’re looking at is not fundamental differences of personality, but really just different ways of thinking about time. Seeing these conflicts as differences in time perspective, rather than distinctions of character, can <button class="locate-btn" onclick="jumpTo(350)">Locate</button> <span id="loc-40">facilitate more effective cooperation between people</span> and get the most out of each person’s individual strengths.</p>
+    </div>
+</div>
+
+<script>
+    const audio = document.getElementById('main-audio');
+    const playBtn = document.getElementById('play-btn');
+    const seekBar = document.getElementById('seek-bar');
+    const currTimeText = document.getElementById('curr-time');
+    const durTimeText = document.getElementById('dur-time');
+
+    // PLAYER CONTROLS
+    function togglePlay() {
+        if (audio.paused) { audio.play(); playBtn.innerText = '⏸'; } 
+        else { audio.pause(); playBtn.innerText = '▶'; }
+    }
+
+    audio.addEventListener('timeupdate', () => {
+        seekBar.value = audio.currentTime;
+        currTimeText.innerText = formatTime(audio.currentTime);
+    });
+
+    audio.onloadedmetadata = () => {
+        seekBar.max = audio.duration;
+        durTimeText.innerText = formatTime(audio.duration);
+    };
+
+    function seekAudio(val) { audio.currentTime = val; }
+
+    function formatTime(sec) {
+        if(isNaN(sec)) return "0:00";
+        let m = Math.floor(sec / 60);
+        let s = Math.floor(sec % 60);
+        return m + ":" + (s < 10 ? '0' : '') + s;
+    }
+
+    // JUMP TO AUDIO
+    function jumpTo(sec) {
+        audio.currentTime = sec;
+        audio.play();
+        playBtn.innerText = '⏸';
+        
+        // Gỡ highlight cũ
+        document.querySelectorAll('.highlight').forEach(e => e.classList.remove('highlight'));
+        
+        // Thêm highlight mới và cuộn tới đó
+        const btn = document.querySelector(`.locate-btn[onclick="jumpTo(${sec})"]`);
+        if(btn && btn.nextElementSibling) {
+            btn.nextElementSibling.classList.add('highlight');
+            btn.nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    // CHECK ANSWERS
+    function checkAnswers() {
+        let score = 0;
+
+        // 1. Chấm điểm dạng điền từ (Bảng Q31 - Q35)
+        for (let i = 31; i <= 35; i++) {
+            const input = document.getElementById('q' + i);
+            const userAns = input.value.trim().toLowerCase();
+            const correctAns = input.dataset.ans.toLowerCase();
+            
+            if (userAns === correctAns) {
+                input.classList.add('correct-input');
+                score++;
+            } else {
+                input.classList.add('wrong-input');
+                const hint = document.createElement('span');
+                hint.className = 'ans-hint';
+                hint.innerText = `(${input.dataset.ans})`;
+                input.parentNode.appendChild(hint);
+            }
+            input.disabled = true;
+        }
+
+        // 2. Chấm điểm dạng Trắc nghiệm (MCQ Q36 - Q40)
+        for (let i = 36; i <= 40; i++) {
+            const block = document.getElementById('block-' + i);
+            const correctAns = block.dataset.ans;
+            const options = document.getElementsByName('q' + i);
+            let userAns = '';
+
+            options.forEach(opt => {
+                if(opt.checked) userAns = opt.value;
+                opt.disabled = true; // Khóa không cho chọn lại
+            });
+
+            if (userAns === correctAns) {
+                block.classList.add('correct-mcq');
+                score++;
+            } else {
+                block.classList.add('wrong-mcq');
+                const hint = document.createElement('div');
+                hint.style.color = '#e53e3e';
+                hint.style.fontWeight = 'bold';
+                hint.style.marginTop = '10px';
+                hint.innerText = `✗ Correct Answer: ${correctAns}`;
+                block.appendChild(hint);
+            }
+        }
+
+        // Hiện kết quả và Transcript
+        const scoreDiv = document.getElementById('score-display');
+        scoreDiv.innerText = `Your Score: ${score}/10`;
+        scoreDiv.style.display = 'block';
+        
+        document.getElementById('transcript').style.display = 'block';
+        document.getElementById('submit-btn').style.display = 'none';
+        
+        scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+</script>
+
 </body>
 </html>
