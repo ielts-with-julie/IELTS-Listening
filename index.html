@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocab Grammar 1</title>
+    <title>Vocab Grammar 2</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -18,7 +18,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.8;
             margin: 0;
             padding: 20px;
         }
@@ -41,9 +41,22 @@
             margin-bottom: 25px;
         }
 
-        h2 {
+        h2.main-title {
             color: #2c3e50;
             margin: 0;
+        }
+
+        .section-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 6px rgba(74, 144, 226, 0.2);
         }
 
         .timer-box {
@@ -57,6 +70,12 @@
 
         .exercise-section {
             margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .exercise-section:last-child {
+            border-bottom: none;
         }
 
         h3 {
@@ -66,6 +85,14 @@
             background: #f4f0f8;
             padding: 10px;
             border-radius: 6px;
+        }
+
+        h4 {
+            color: #e67e22;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #fcf3cf;
+            display: inline-block;
         }
 
         .word-box {
@@ -82,6 +109,11 @@
             color: #d35400;
         }
 
+        .passage {
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+
         .question {
             margin-bottom: 15px;
             font-size: 1.1rem;
@@ -90,52 +122,63 @@
         input[type="text"] {
             border: none;
             border-bottom: 2px dashed #95a5a6;
-            background: transparent;
+            background: #f8f9fa;
             font-size: 1.1rem;
             color: #2980b9;
             text-align: center;
             padding: 2px 5px;
-            width: 120px;
+            width: 130px;
             outline: none;
             transition: all 0.3s;
             font-weight: bold;
+            border-radius: 4px 4px 0 0;
         }
 
         input[type="text"]:focus {
             border-bottom-color: var(--primary-color);
+            background: #eef2f6;
+        }
+
+        select.ans-select {
+            font-size: 1.1rem;
+            padding: 5px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            color: #2980b9;
+            font-weight: bold;
+            outline: none;
+            cursor: pointer;
         }
 
         .match-container {
             display: flex;
-            gap: 20px;
+            gap: 30px;
         }
 
-        .match-left, .match-right {
-            flex: 1;
-        }
-
+        .match-left { flex: 1.2; }
+        .match-right { flex: 1; background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+        
         .match-item {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
-        .match-item input {
-            width: 40px;
-            margin-right: 10px;
-            text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .match-right p {
+            margin: 0 0 10px 0;
         }
 
         .translation {
             display: none;
-            color: #7f8c8d;
+            color: #27ae60;
             font-size: 0.95rem;
             font-style: italic;
-            margin-top: 5px;
-            padding-left: 20px;
-            border-left: 3px solid #bdc3c7;
+            margin-top: 8px;
+            padding: 10px;
+            background-color: #eafaf1;
+            border-radius: 6px;
+            border-left: 4px solid #2ecc71;
         }
 
         .controls {
@@ -157,9 +200,7 @@
             transition: transform 0.2s, opacity 0.2s;
         }
 
-        button:active {
-            transform: scale(0.95);
-        }
+        button:active { transform: scale(0.95); }
 
         #submitBtn {
             background-color: var(--primary-color);
@@ -167,21 +208,17 @@
             box-shadow: 0 4px 6px rgba(74, 144, 226, 0.3);
         }
 
-        #submitBtn:hover {
-            background-color: #357abd;
-        }
+        #submitBtn:hover { background-color: #357abd; }
 
         #translateBtn {
-            background-color: #9b59b6;
+            background-color: #f39c12;
             color: white;
-            box-shadow: 0 4px 6px rgba(155, 89, 182, 0.3);
+            box-shadow: 0 4px 6px rgba(243, 156, 18, 0.3);
         }
 
-        #translateBtn:hover {
-            background-color: #8e44ad;
-        }
+        #translateBtn:hover { background-color: #d35400; }
 
-        /* Classes for checking answers */
+        /* Status classes */
         .correct {
             border-bottom: 2px solid var(--success-color) !important;
             color: var(--success-color) !important;
@@ -194,11 +231,11 @@
             background-color: #fdedec !important;
         }
 
-        .match-item input.correct { border: 2px solid var(--success-color) !important; }
-        .match-item input.incorrect { border: 2px solid var(--error-color) !important; }
+        select.correct { border: 2px solid var(--success-color) !important; }
+        select.incorrect { border: 2px solid var(--error-color) !important; }
 
         .correct-ans-label {
-            color: var(--success-color);
+            color: var(--error-color);
             font-weight: bold;
             font-size: 0.95rem;
             margin-left: 5px;
@@ -219,115 +256,217 @@
 
 <div class="container">
     <div class="header-bar">
-        <h2>Practice Exercises</h2>
+        <h2 class="main-title">English Practice Exercises</h2>
         <div class="timer-box" id="timer">00:00</div>
     </div>
 
-    <div class="exercise-section">
-        <h3>1. Complete the sentences below with words and phrases from the box.</h3>
-        <div class="word-box">
-            <span>city centre</span>
-            <span>country</span>
-            <span>mountains</span>
-            <span>outskirts</span>
-            <span>sea</span>
-            <span>suburbs</span>
-        </div>
-
-        <div class="question">
-            1. Feodor is keen on climbing and he would love to live in the <input type="text" data-ans="mountains" value="mountains" readonly style="color: green; border-bottom-color: green;">.
-            <div class="translation">Feodor rất thích leo núi và anh ấy rất muốn sống ở vùng núi.</div>
-        </div>
-        <div class="question">
-            2. Khaled lives in the <input type="text" class="ans-input" data-ans="city centre">, just near the main square and next to the central station.
-            <div class="translation">Khaled sống ở trung tâm thành phố, ngay gần quảng trường chính và cạnh ga trung tâm.</div>
-        </div>
-        <div class="question">
-            3. Leila takes a bus to get to college from her home on the <input type="text" class="ans-input" data-ans="outskirts"> of the city.
-            <div class="translation">Leila bắt xe buýt để đến trường đại học từ nhà cô ấy ở vùng ngoại ô của thành phố.</div>
-        </div>
-        <div class="question">
-            4. Hua was born and brought up in the <input type="text" class="ans-input" data-ans="country">, surrounded by fields and farms.
-            <div class="translation">Hua sinh ra và lớn lên ở vùng nông thôn, được bao quanh bởi đồng ruộng và trang trại.</div>
-        </div>
-        <div class="question">
-            5. I don't really live in the city; I live in a village nearby, so I suppose I live in the <input type="text" class="ans-input" data-ans="suburbs">.
-            <div class="translation">Tôi không thực sự sống trong thành phố; tôi sống ở một ngôi làng gần đó, vì vậy tôi cho là tôi sống ở vùng ven đô (ngoại ô).</div>
-        </div>
-        <div class="question">
-            6. Piau's father was a fisherman, so he has always lived by the <input type="text" class="ans-input" data-ans="sea">.
-            <div class="translation">Bố của Piau là một ngư dân, vì vậy anh ấy luôn sống gần biển.</div>
-        </div>
-    </div>
+    <h2 class="section-title">A. Grammar</h2>
 
     <div class="exercise-section">
-        <h3>2. Match the phrases on the left (1-8) with phrases on the right (a-h) which express similar ideas.</h3>
-        <p><i>(Nhập chữ cái a, b, c... vào ô trống)</i></p>
+        <h3>1. Write the past simple form of these verbs (Crossword clues).</h3>
+        <p><i>(Nhập dạng quá khứ của các động từ sau đây)</i></p>
         <div class="match-container">
             <div class="match-left">
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="c"> 1. crowded streets</div>
-                <div class="translation">1. Đường phố đông đúc - (c) Vỉa hè chật kín người.</div>
-                
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="g"> 2. fast public transport</div>
-                <div class="translation">2. Phương tiện công cộng nhanh chóng - (g) Tàu điện ngầm sẽ đưa bạn đến nơi bạn muốn một cách nhanh chóng.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="b"> 3. friendly inhabitants</div>
-                <div class="translation">3. Cư dân thân thiện - (b) Người dân địa phương rất hiếu khách.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="h"> 4. lots to do</div>
-                <div class="translation">4. Nhiều việc để làm - (h) Có rất nhiều địa điểm thú vị để tham quan.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="a"> 5. people in a hurry</div>
-                <div class="translation">5. Những người vội vã - (a) Mọi người đều đang vội.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="f"> 6. spectacular scenery</div>
-                <div class="translation">6. Phong cảnh ngoạn mục - (f) Có những khung cảnh tuyệt vời từ khách sạn.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="e"> 7. has a reputation for</div>
-                <div class="translation">7. Có danh tiếng về - (e) Nổi tiếng về.</div>
-
-                <div class="match-item"><input type="text" maxlength="1" class="ans-input" data-ans="d"> 8. a relaxed lifestyle</div>
-                <div class="translation">8. Lối sống thư giãn - (d) Lối sống yên tĩnh.</div>
+                <h4>Across (&rarr;)</h4>
+                <div class="question">1. win &rarr; <input type="text" class="ans-input" data-ans="won"></div>
+                <div class="question">2. have &rarr; <input type="text" class="ans-input" data-ans="had"></div>
+                <div class="question">3. do &rarr; <input type="text" class="ans-input" data-ans="did"></div>
+                <div class="question">4. become &rarr; <input type="text" class="ans-input" data-ans="became"></div>
+                <div class="question">5. spend &rarr; <input type="text" class="ans-input" data-ans="spent"></div>
+                <div class="question">6. write &rarr; <input type="text" class="ans-input" data-ans="wrote"></div>
+                <div class="question">7. leave &rarr; <input type="text" class="ans-input" data-ans="left"></div>
+                <div class="question">9. get &rarr; <input type="text" class="ans-input" data-ans="got"></div>
+                <div class="question">11. take &rarr; <input type="text" class="ans-input" data-ans="took"></div>
             </div>
+            
             <div class="match-right">
-                <div><b>a</b> Everyone is in a rush.</div>
-                <div><b>b</b> The local population is very welcoming.</div>
-                <div><b>c</b> The pavements are full of people.</div>
-                <div><b>d</b> quiet way of life</div>
-                <div><b>e</b> is known for</div>
-                <div><b>f</b> There are wonderful views from the hotel.</div>
-                <div><b>g</b> The underground will take you rapidly where you want to go.</div>
-                <div><b>h</b> There are plenty of interesting places to visit.</div>
+                <h4>Down (&darr;)</h4>
+                <div class="question">1. go &rarr; <input type="text" class="ans-input" data-ans="went"></div>
+                <div class="question">4. buy &rarr; <input type="text" class="ans-input" data-ans="bought"></div>
+                <div class="question">5. sell &rarr; <input type="text" class="ans-input" data-ans="sold"></div>
+                <div class="question">8. be &rarr; <input type="text" class="ans-input" data-ans="was|were|was/were" placeholder="was/were"></div>
+                <div class="question">10. meet &rarr; <input type="text" class="ans-input" data-ans="met"></div>
             </div>
         </div>
     </div>
 
     <div class="exercise-section">
-        <h3>4. Complete these sentences with the correct form of the verb in brackets: present simple or present continuous.</h3>
+        <h3>2. Complete this passage with the past simple of the verbs in the box.</h3>
+        <div class="word-box">
+            <span>be</span> <span>decide</span> <span>discover</span> <span>do</span>
+            <span>enjoy</span> <span>go</span> <span>have</span> <span>leave</span>
+            <span>meet</span> <span>spend</span> <span>start</span> <span>win</span>
+        </div>
+        
+        <div class="passage">
+            After I 1 <input type="text" data-ans="left" value="left" readonly style="color: green; border-bottom-color: green; width: 60px;"> school, I 2 <input type="text" class="ans-input" data-ans="spent"> nine months travelling around South-East Asia. I 3 <input type="text" class="ans-input" data-ans="went"> to Indonesia, Malaysia, Thailand and Vietnam. I 4 <input type="text" class="ans-input" data-ans="met"> lots of different people, 5 <input type="text" class="ans-input" data-ans="had"> some great experiences, and 6 <input type="text" class="ans-input" data-ans="discovered"> some fascinating places. I 7 <input type="text" class="ans-input" data-ans="enjoyed"> it all so much that I 8 <input type="text" class="ans-input" data-ans="decided"> to work in the travel business. So, I 9 <input type="text" class="ans-input" data-ans="did"> a course in Travel and Tourism at my local college. I then 10 <input type="text" class="ans-input" data-ans="started"> my own internet travel agency, selling cheap airline tickets. It 11 <input type="text" class="ans-input" data-ans="was"> very successful, and today thousands of people use it to buy their tickets and holidays. Last year it 12 <input type="text" class="ans-input" data-ans="won"> an award for services to the travel industry.
+        </div>
+        <div class="translation">
+            Sau khi tôi 1 (rời) trường, tôi đã 2 (dành) chín tháng đi du lịch quanh Đông Nam Á. Tôi 3 (đã đi) đến Indonesia, Malaysia, Thái Lan và Việt Nam. Tôi 4 (đã gặp) rất nhiều người khác nhau, 5 (có) những trải nghiệm tuyệt vời, và 6 (khám phá ra) những địa điểm thú vị. Tôi 7 (rất thích) tất cả những điều đó đến mức tôi 8 (quyết định) làm việc trong ngành du lịch. Vì vậy, tôi 9 (đã tham gia) một khóa học về Du lịch và Lữ hành tại trường cao đẳng địa phương. Sau đó, tôi 10 (bắt đầu) mở một đại lý du lịch trên internet của riêng mình, bán vé máy bay giá rẻ. Nó 11 (đã) rất thành công và ngày nay hàng ngàn người sử dụng nó để mua vé và các kỳ nghỉ. Năm ngoái nó 12 (đã giành được) một giải thưởng vì các dịch vụ đóng góp cho ngành du lịch.
+        </div>
+    </div>
+
+
+    <h2 class="section-title" style="background-color: #8e44ad;">B. Vocabulary</h2>
+
+    <div class="exercise-section">
+        <h3>1. Match the first part of each sentence (1-5) with the second part (a-e).</h3>
+        <div class="match-container">
+            <div class="match-left">
+                <div class="match-item">
+                    <select class="ans-select" data-ans="c">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option>
+                        <option value="c">c</option><option value="d">d</option><option value="e">e</option>
+                    </select>
+                    1. <i>ant</i>, <i>ist</i> and <i>er</i> are often used at the end of a word
+                </div>
+                <div class="translation">1. ant, ist và er thường được dùng ở cuối một từ -> c. để chỉ một người, đặc biệt là người có một nghề nghiệp cụ thể.</div>
+
+                <div class="match-item">
+                    <select class="ans-select" data-ans="e">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option>
+                        <option value="c">c</option><option value="d">d</option><option value="e">e</option>
+                    </select>
+                    2. <i>un</i> is often used at the beginning of a word
+                </div>
+                <div class="translation">2. un thường được dùng ở đầu một từ -> e. để tạo thành từ mang nghĩa phủ định.</div>
+
+                <div class="match-item">
+                    <select class="ans-select" data-ans="b">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option>
+                        <option value="c">c</option><option value="d">d</option><option value="e">e</option>
+                    </select>
+                    3. <i>able</i> and <i>ic</i> are often used at the end of a word
+                </div>
+                <div class="translation">3. able và ic thường được dùng ở cuối một từ -> b. để biến đổi một động từ hoặc danh từ thành tính từ.</div>
+
+                <div class="match-item">
+                    <select class="ans-select" data-ans="a">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option>
+                        <option value="c">c</option><option value="d">d</option><option value="e">e</option>
+                    </select>
+                    4. <i>re</i> is often used at the beginning of a word
+                </div>
+                <div class="translation">4. re thường được dùng ở đầu một từ -> a. để chỉ ra rằng một việc gì đó phải được làm lại.</div>
+
+                <div class="match-item">
+                    <select class="ans-select" data-ans="d">
+                        <option value="">--</option><option value="a">a</option><option value="b">b</option>
+                        <option value="c">c</option><option value="d">d</option><option value="e">e</option>
+                    </select>
+                    5. <i>fy</i> is often used at the end of a word
+                </div>
+                <div class="translation">5. fy thường được dùng ở cuối một từ -> d. để biến đổi một danh từ hoặc tính từ thành động từ.</div>
+            </div>
+            
+            <div class="match-right">
+                <p><b>a.</b> to indicate that something must be done again.</p>
+                <p><b>b.</b> to change a verb or noun into an adjective.</p>
+                <p><b>c.</b> to indicate a person, especially a person with a particular job.</p>
+                <p><b>d.</b> to change a noun or adjective into a verb.</p>
+                <p><b>e.</b> to make a word negative.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="exercise-section">
+        <h3>2. Complete these sentences with the correct form of the words in the box.</h3>
+        <div class="word-box">
+            <span>accept</span> <span>account</span> <span>afford</span> <span>apology</span> <span>certainty</span>
+            <span>prefer</span> <span>run</span> <span>write</span> <span>receive</span> <span>identity</span>
+        </div>
+
+        <div class="question">
+            1. My essay on famous explorers was so bad that I had to <input type="text" data-ans="rewrite" value="rewrite" readonly style="color: green; border-bottom-color: green;"> it.
+            <div class="translation">Bài luận của tôi về các nhà thám hiểm nổi tiếng quá tệ đến nỗi tôi phải viết lại (rewrite) nó.</div>
+        </div>
+        <div class="question">
+            2. When you arrive at the hotel, the <input type="text" class="ans-input" data-ans="receptionist"> will give you your key and tell you which room you're in.
+            <div class="translation">Khi bạn đến khách sạn, lễ tân (receptionist) sẽ đưa chìa khóa và báo cho bạn biết bạn ở phòng nào.</div>
+        </div>
+        <div class="question">
+            3. Sylvia Earle thinks that the amount of fish we are catching at sea is <input type="text" class="ans-input" data-ans="unacceptable">.
+            <div class="translation">Sylvia Earle cho rằng số lượng cá chúng ta đang đánh bắt trên biển là không thể chấp nhận được (unacceptable).</div>
+        </div>
+        <div class="question">
+            4. There were over 300 <input type="text" class="ans-input" data-ans="runners"> in the race.
+            <div class="translation">Có hơn 300 người chạy (runners) tham gia cuộc đua.</div>
+        </div>
+        <div class="question">
+            5. In my opinion, travelling with friends is <input type="text" class="ans-input" data-ans="preferable"> to travelling on your own.
+            <div class="translation">Theo tôi, đi du lịch cùng bạn bè thì đáng thích hơn (preferable) là đi một mình.</div>
+        </div>
+        <div class="question">
+            6. Can you <input type="text" class="ans-input" data-ans="identify"> the famous explorer in this picture? I think I recognise him, but I'm not sure.
+            <div class="translation">Bạn có thể nhận dạng (identify) nhà thám hiểm nổi tiếng trong bức ảnh này không? Tôi nghĩ tôi nhận ra ông ấy, nhưng không chắc lắm.</div>
+        </div>
+        <div class="question">
+            7. Unfortunately, there's a lot of <input type="text" class="ans-input" data-ans="uncertainty"> about her future with the company, and she may lose her job.
+            <div class="translation">Thật không may, có rất nhiều sự không chắc chắn (uncertainty) về tương lai của cô ấy tại công ty, và cô ấy có thể mất việc.</div>
+        </div>
+        <div class="question">
+            8. This restaurant is not expensive. The food is good and <input type="text" class="ans-input" data-ans="affordable">.
+            <div class="translation">Nhà hàng này không đắt. Đồ ăn ngon và giá cả phải chăng (affordable).</div>
+        </div>
+        <div class="question">
+            9. She was very <input type="text" class="ans-input" data-ans="apologetic"> about missing the meeting and said sorry to everyone.
+            <div class="translation">Cô ấy tỏ ra rất hối lỗi (apologetic) vì bỏ lỡ cuộc họp và đã xin lỗi mọi người.</div>
+        </div>
+        <div class="question">
+            10. We need a good <input type="text" class="ans-input" data-ans="accountant"> to take care of our business finances.
+            <div class="translation">Chúng tôi cần một kế toán viên (accountant) giỏi để lo tài chính cho công ty.</div>
+        </div>
+    </div>
+
+    <div class="exercise-section">
+        <h3>3. Complete these sentences with the correct form of the word in brackets.</h3>
         
         <div class="question">
-            1. The number of medical students at my university <input type="text" data-ans="is rising" value="is rising" readonly style="color: green; border-bottom-color: green;"> (rise).
-            <div class="translation">Số lượng sinh viên y khoa tại trường đại học của tôi đang tăng lên.</div>
+            1. Unfortunately, the computer I tried to order on the Internet was <input type="text" data-ans="unavailable" value="unavailable" readonly style="color: green; border-bottom-color: green;"> (available).
+            <div class="translation">Thật không may, chiếc máy tính mà tôi cố đặt hàng trên Internet hiện không có sẵn (unavailable).</div>
         </div>
         <div class="question">
-            2. Sayed <input type="text" class="ans-input" data-ans="enjoys"> (enjoy) playing football when he <input type="text" class="ans-input" data-ans="has"> (have) time.
-            <div class="translation">Sayed thích chơi bóng đá khi anh ấy có thời gian.</div>
+            2. He gave me a horrible look. He absolutely <input type="text" class="ans-input" data-ans="terrified"> (terror) me.
+            <div class="translation">Anh ta nhìn tôi bằng ánh mắt đáng sợ. Anh ta hoàn toàn làm tôi khiếp sợ (terrified).</div>
         </div>
         <div class="question">
-            3. Walid <input type="text" class="ans-input" data-ans="lives"> (live) in Qatar, where he was born, but he <input type="text" class="ans-input" data-ans="works"> (work) in Dubai almost every day.
-            <div class="translation">Walid sống ở Qatar, nơi anh ấy sinh ra, nhưng anh ấy làm việc ở Dubai gần như mỗi ngày.</div>
+            3. A sportsman or sportswoman needs a good <input type="text" class="ans-input" data-ans="trainer"> (train) to help them succeed.
+            <div class="translation">Một nam hay nữ vận động viên cần một huấn luyện viên (trainer) giỏi để giúp họ thành công.</div>
         </div>
         <div class="question">
-            4. Nowadays, more and more people <input type="text" class="ans-input" data-ans="are leaving"> (leave) the villages to work in the city.
-            <div class="translation">Ngày nay, ngày càng có nhiều người rời bỏ làng quê để lên thành phố làm việc.</div>
+            4. I can't see you tonight, so can we <input type="text" class="ans-input" data-ans="rearrange"> (arrange) our meeting for another time?
+            <div class="translation">Tối nay tôi không thể gặp bạn, vậy chúng ta có thể sắp xếp lại (rearrange) cuộc họp vào thời gian khác được không?</div>
         </div>
         <div class="question">
-            5. Katya <input type="text" class="ans-input" data-ans="is studying"> (study) English because she <input type="text" class="ans-input" data-ans="wants"> (want) to be a flight attendant.
-            <div class="translation">Katya đang học tiếng Anh vì cô ấy muốn trở thành một tiếp viên hàng không.</div>
+            5. The audience applauded as the world-famous <input type="text" class="ans-input" data-ans="pianist"> (piano) walked onto the stage.
+            <div class="translation">Khán giả vỗ tay khi nghệ sĩ dương cầm (pianist) nổi tiếng thế giới bước lên sân khấu.</div>
         </div>
         <div class="question">
-            6. People's reading habits <input type="text" class="ans-input" data-ans="are changing"> (change) because they <input type="text" class="ans-input" data-ans="read"> (read) more on the Internet and fewer books.
-            <div class="translation">Thói quen đọc sách của mọi người đang thay đổi vì họ đọc trên Internet nhiều hơn và ít đọc sách hơn.</div>
+            6. I can't eat seafood because I'm <input type="text" class="ans-input" data-ans="allergic"> (allergy) to it.
+            <div class="translation">Tôi không thể ăn hải sản vì tôi bị dị ứng (allergic) với nó.</div>
+        </div>
+        <div class="question">
+            7. There were almost 100 <input type="text" class="ans-input" data-ans="applicants"> (apply) for the job.
+            <div class="translation">Có gần 100 ứng viên (applicants) nộp đơn cho công việc này.</div>
+        </div>
+        <div class="question">
+            8. <i>Dog, man, flower</i> and <i>book</i> are examples of <input type="text" class="ans-input" data-ans="countable"> (count) nouns. <i>Rice, water, air</i> and <i>earth</i> are <input type="text" class="ans-input" data-ans="uncountable"> (count).
+            <div class="translation">Chó, người, hoa và sách là những ví dụ về danh từ đếm được (countable). Gạo, nước, không khí và đất là không đếm được (uncountable).</div>
+        </div>
+    </div>
+
+    <div class="exercise-section">
+        <h3>4. Complete the passage with words and phrases from the box.</h3>
+        <div class="word-box">
+            <span>account</span> <span>combines</span> <span>commentary</span> <span>community</span>
+            <span>eventually</span> <span>prove</span> <span>regard</span> <span>voyage</span>
+        </div>
+        
+        <div class="passage">
+            Many people 1 <input type="text" data-ans="regard" value="regard" readonly style="color: green; border-bottom-color: green;"> Paul Theroux as one of the world's best travel writers. <i>The Happy Isles of Oceania</i>, one of his classic travel books, is an 2 <input type="text" class="ans-input" data-ans="account"> of a long 3 <input type="text" class="ans-input" data-ans="voyage"> around the islands of the South Pacific. The book 4 <input type="text" class="ans-input" data-ans="combines"> stories about the people he meets with a 5 <input type="text" class="ans-input" data-ans="commentary"> on how he feels from day to day. This is important, because he made the trip at a time in his life when he had a lot of personal problems. He wanted to 6 <input type="text" class="ans-input" data-ans="prove"> to himself that he could get on with life, even when things were going badly. At first, he found the trip difficult because he missed his family and friends. However, on each of the islands he visited, he stayed with a local 7 <input type="text" class="ans-input" data-ans="community">, and the people he met made him realise that life could be good, even under difficult circumstances. He 8 <input type="text" class="ans-input" data-ans="eventually"> returned home a happier person.
+        </div>
+        <div class="translation">
+            Nhiều người 1 (coi) Paul Theroux là một trong những nhà văn viết về du lịch xuất sắc nhất thế giới. "The Happy Isles of Oceania", một trong những cuốn sách du lịch kinh điển của ông, là một 2 (bản ghi chép/tường thuật) về một 3 (chuyến hành trình dài trên biển) quanh các hòn đảo ở Nam Thái Bình Dương. Cuốn sách 4 (kết hợp) những câu chuyện về những người ông gặp với 5 (những lời bình luận) về cảm nhận của ông qua từng ngày. Điều này rất quan trọng, vì ông thực hiện chuyến đi vào thời điểm trong cuộc sống khi ông đang gặp rất nhiều vấn đề cá nhân. Ông muốn 6 (chứng minh) với bản thân rằng ông có thể tiếp tục sống tốt, ngay cả khi mọi chuyện đang diễn ra tồi tệ. Ban đầu, ông thấy chuyến đi thật khó khăn vì nhớ gia đình và bạn bè. Tuy nhiên, trên mỗi hòn đảo ông đến thăm, ông đã ở cùng một 7 (cộng đồng) địa phương, và những người ông gặp đã giúp ông nhận ra rằng cuộc sống vẫn có thể tốt đẹp, ngay cả trong những hoàn cảnh khó khăn. 8 (Cuối cùng), ông đã trở về nhà với tư cách là một người hạnh phúc hơn.
         </div>
     </div>
 
@@ -356,39 +495,55 @@
         }, 1000);
     }
     
-    // Khởi động timer khi load trang
     window.onload = startTimer;
 
     // --- SUBMIT LOGIC ---
     document.getElementById('submitBtn').addEventListener('click', function() {
-        if (isSubmitted) return; // Chỉ chấm điểm 1 lần
+        if (isSubmitted) return; 
         
-        clearInterval(timerInterval); // Dừng đồng hồ
+        clearInterval(timerInterval); 
         isSubmitted = true;
         this.innerHTML = "Đã Nộp Bài ✅";
         this.style.backgroundColor = "#2ecc71";
 
-        const inputs = document.querySelectorAll('.ans-input');
-        
-        inputs.forEach(input => {
-            let userAnswer = input.value.trim().toLowerCase();
-            let correctAnswer = input.getAttribute('data-ans').toLowerCase();
+        // Check Text Inputs
+        const textInputs = document.querySelectorAll('.ans-input');
+        textInputs.forEach(input => {
+            // Chuẩn hóa câu trả lời: Xóa khoảng trắng thừa 2 đầu
+            let userAnswer = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+            // Phân tách các đáp án hợp lệ (bằng dấu |)
+            let correctAnswers = input.getAttribute('data-ans').toLowerCase().split('|');
             
-            // Xóa class cũ nếu có
-            input.classList.remove('correct', 'incorrect');
+            input.disabled = true; 
             
-            if (userAnswer === correctAnswer) {
+            if (correctAnswers.includes(userAnswer)) {
                 input.classList.add('correct');
             } else {
                 input.classList.add('incorrect');
-                
-                // Hiển thị đáp án đúng bên cạnh
                 let spanCorrect = document.createElement('span');
                 spanCorrect.className = 'correct-ans-label';
-                spanCorrect.innerText = ` (${input.getAttribute('data-ans')})`;
-                
-                // Chèn span vào ngay sau thẻ input
+                // Chỉ hiển thị đáp án đúng đầu tiên cho gọn
+                spanCorrect.innerText = ` [${correctAnswers[0]}]`;
                 input.parentNode.insertBefore(spanCorrect, input.nextSibling);
+            }
+        });
+
+        // Check Select (Dropdowns)
+        const selectInputs = document.querySelectorAll('.ans-select');
+        selectInputs.forEach(select => {
+            let userAnswer = select.value.trim().toLowerCase();
+            let correctAnswer = select.getAttribute('data-ans').toLowerCase();
+            
+            select.disabled = true;
+            
+            if (userAnswer === correctAnswer) {
+                select.classList.add('correct');
+            } else {
+                select.classList.add('incorrect');
+                let spanCorrect = document.createElement('span');
+                spanCorrect.className = 'correct-ans-label';
+                spanCorrect.innerText = ` [Đáp án: ${select.getAttribute('data-ans')}]`;
+                select.parentNode.insertBefore(spanCorrect, select.nextSibling);
             }
         });
     });
@@ -404,9 +559,9 @@
         });
 
         if (isTranslated) {
-            this.style.backgroundColor = "#8e44ad";
+            this.style.backgroundColor = "#e67e22";
         } else {
-            this.style.backgroundColor = "#9b59b6";
+            this.style.backgroundColor = "#f39c12";
         }
     });
 </script>
